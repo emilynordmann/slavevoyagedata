@@ -79,11 +79,11 @@ Setting `caption =` inside `labs()` puts text inside the rendered plot, where a 
 
 ## Where to go next
 
-* @sec-getting-started covered the basics. For a deeper treatment of the same material, see [Data Visualisation Using R, for Researchers Who Don't Use R](https://psyteachr.github.io/introdataviz/) (Nordmann et al., 2022).
-* For a broader course covering Quarto, data wrangling, joins and reproducible reports, see [Applied Data Skills](https://psyteachr.github.io/ads-v3/) (Nordmann & DeBruine, 2025).
+* @sec-getting-started covered the basics. For a deeper treatment of the same material, see [Data Visualisation Using R, for Researchers Who Don't Use R](https://psyteachr.github.io/introdataviz/) [@nordmann2022].
+* For a broader course covering Quarto, data wrangling, joins and reproducible reports, see [Applied Data Skills](https://psyteachr.github.io/ads-v3/) [@nordmann2025ads].
 * For a reference card of `ggplot2` functions, the [official cheat sheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html) is excellent.
 * The [R Graph Gallery](https://r-graph-gallery.com/) is a searchable collection of every chart type imaginable, with the code to produce each one.
-* For statistical concepts and worked examples, [R for Data Science](https://r4ds.hadley.nz/) by Wickham, Çetinkaya-Rundel & Grolemund is freely available online.
+* For statistical concepts and worked examples, see [R for Data Science](https://r4ds.hadley.nz/) [@wickham2023r4ds], which is freely available online.
 
 ## A closing note
 

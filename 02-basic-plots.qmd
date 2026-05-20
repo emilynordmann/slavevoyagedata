@@ -4,26 +4,9 @@
 source("R/booktem_setup.R")
 source("R/my_setup.R")
 library(tidyverse)
+library(janitor)
 library(patchwork)
-dat_final <- read_csv("data.csv", show_col_types = FALSE) |>
-  rename(id = `Voyage ID`,
-         vessel = `Vessel name`,
-         start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,
-         purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,
-         total_embarked = `Total embarked`,
-         total_disembarked = `Total disembarked`,
-         arrival_year = `Year of arrival at port of disembarkation`,
-         men = `Percent men`,
-         women = `Percent women`,
-         children = `Percent children`,
-         died = `Slaves died during middle passage`,
-         mortality = `Mortality rate`,
-         outcome = `Slaves outcome label`) |>
-  mutate(across(c(id, vessel, purchase_place, outcome), as.factor),
-         start_port = factor(start_port,
-                             levels = c("Liverpool", "London", "Bristol",
-                                        sort(setdiff(unique(start_port),
-                                                     c("Liverpool", "London", "Bristol"))))))
+source("R/load_data.R")
 ```
 
 ## Intended learning outcomes
@@ -72,7 +55,7 @@ ggplot(dat_final, aes(arrival_year, total_embarked)) +
 ```
 
 ::: {.callout-note}
-You will see a warning saying `Removed 422 rows containing missing values or values outside the scale range`. That means 422 voyages in the data have a missing value for either `arrival_year` or `total_embarked`. `ggplot2` quietly drops them. We will return to missing data in @sec-overplotting.
+You will see a warning saying `Removed 422 rows containing missing values or values outside the scale range`. That means 422 voyages in the data have a missing value for either `arrival_year` or `total_embarked`. `ggplot2` quietly drops them. We will look at handling missing data directly in @sec-wide-to-long.
 :::
 
 There are so many points that it is hard to see the trend. That is not a fault of the plot; it is a reflection of the scale of the trade.

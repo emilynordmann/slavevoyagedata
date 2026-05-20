@@ -4,29 +4,9 @@
 source("R/booktem_setup.R")
 source("R/my_setup.R")
 library(tidyverse)
+library(janitor)
 library(patchwork)
-dat_final <- read_csv("data.csv", show_col_types = FALSE) |>
-  rename(id = `Voyage ID`,
-         vessel = `Vessel name`,
-         start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,
-         purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,
-         total_embarked = `Total embarked`,
-         total_disembarked = `Total disembarked`,
-         arrival_year = `Year of arrival at port of disembarkation`,
-         men = `Percent men`,
-         women = `Percent women`,
-         children = `Percent children`,
-         died = `Slaves died during middle passage`,
-         mortality = `Mortality rate`,
-         outcome = `Slaves outcome label`) |>
-  mutate(across(c(id, vessel, purchase_place, outcome), as.factor),
-         start_port = factor(start_port,
-                             levels = c("Liverpool", "London", "Bristol",
-                                        sort(setdiff(unique(start_port),
-                                                     c("Liverpool", "London", "Bristol"))))))
-
-dat_filter <- dat_final |>
-  filter(start_port %in% c("Liverpool", "London", "Bristol"))
+source("R/load_data.R")
 ```
 
 ## Intended learning outcomes
@@ -40,17 +20,20 @@ By the end of this chapter you will be able to:
 
 ## Functions used
 
-* tidyr: `pivot_longer()`
+* tidyr: `pivot_longer()`, `drop_na()`
 * forcats: `fct_relevel()`
-* ggplot2: `geom_boxplot()`, `geom_col()`
+* ggplot2: `geom_boxplot()`
 * patchwork: `+`, `/`, `plot_layout()`, `plot_annotation()`
 
-## From wide to long
+## From wide to long {#sec-wide-to-long}
 
-The dataset has three columns recording the demographic make-up of each voyage. `men`, `women` and `children` are each a percentage. To plot all three on the same axes we need them in a single column.
+The dataset has three columns recording the demographic make-up of each voyage. `men`, `women` and `children` are each a proportion of the people embarked. Most voyages in the database do not record this breakdown, so these three columns are missing for the great majority of rows. Before reshaping, we drop the voyages with no demographic data using `drop_na()`, which removes any row that is missing a value in one of the named columns.
 
 ```{r}
-head(dat_filter[, c("start_port", "men", "women", "children")])
+dat_demographic <- dat_filter |>
+  drop_na(men, women, children)
+
+head(dat_demographic[, c("start_port", "men", "women", "children")])
 ```
 
 This is the *wide* form. Each demographic category has its own column. To plot them together we need the *long* form, where one column holds the category and another holds the value.
@@ -58,18 +41,18 @@ This is the *wide* form. Each demographic category has its own column. To plot t
 `pivot_longer()` does the conversion. We tell it which columns to gather (`cols`), the name of the new column that will hold the original column names (`names_to`) and the name of the new column that will hold the values (`values_to`).
 
 ```{r}
-dat_long <- dat_filter |>
+dat_long <- dat_demographic |>
   pivot_longer(cols = c(men, women, children),
                names_to = "demographic",
-               values_to = "percent")
+               values_to = "proportion")
 
-head(dat_long[, c("start_port", "demographic", "percent")])
+head(dat_long[, c("start_port", "demographic", "proportion")])
 ```
 
-Each voyage now appears three times, once per demographic category. The column is called `demographic` because it holds the categories *man*, *woman* and *child*. The values are percentages of the people embarked.
+Each voyage now appears three times, once per demographic category. The column is called `demographic` because it holds the categories *man*, *woman* and *child*. The values are proportions of the people embarked.
 
 ::: {.callout-note}
-The original column names `men`, `women` and `children` are inherited from the source database, where they record the percentages reported for each voyage. In the reshaped data, the column `demographic` holds those labels as values.
+The demographic figures describe only the voyages that recorded them, a minority of the total. The original column names `men`, `women` and `children` are inherited from the source database. In the reshaped data, the column `demographic` holds those labels as values.
 :::
 
 ## Ordering categorical axes
@@ -83,22 +66,22 @@ dat_long <- dat_long |>
 
 ## Grouped boxplots
 
-We can now show the distribution of the demographic percentages, broken down by port of origin, all on one plot.
+We can now show the distribution of the demographic proportions, broken down by port of origin, all on one plot.
 
 ```{r}
 #| label: fig-grouped-box
 #| fig-cap: "Demographic composition of voyages from each port."
-#| fig-alt: "Grouped boxplots. The x-axis shows demographic category (men, women, children). For each category there are three boxes, one per port of origin (Liverpool, London, Bristol), distinguished by fill colour. Men make up roughly 55-65 percent on average, women 20-30 percent, children 10-20 percent."
+#| fig-alt: "Grouped boxplots. The x-axis shows demographic category (men, women, children). For each category there are three boxes, one per port of origin (Liverpool, London, Bristol), distinguished by fill colour. Men account for a proportion of roughly 0.5 of those embarked on average, women about 0.3 and children under 0.2."
 #| warning: false
-ggplot(dat_long, aes(x = demographic, y = percent, fill = start_port)) +
+ggplot(dat_long, aes(x = demographic, y = proportion, fill = start_port)) +
   geom_boxplot(alpha = 0.6) +
   scale_fill_viridis_d(option = "E") +
   labs(x = "Demographic category",
-       y = "Percent of those embarked",
+       y = "Proportion of those embarked",
        fill = "Port of origin")
 ```
 
-Men make up the majority of those embarked on every type of voyage, but the percentage of women and children varies markedly by port.
+Men make up the majority of those embarked on every type of voyage, but the proportion of women and children varies markedly by port.
 
 ::: {.callout-tip}
 ## Activity
@@ -113,15 +96,15 @@ You can combine `filter()` and `ggplot()` in a single pipe rather than creating 
 ```{r}
 #| label: fig-filtered-box
 #| fig-cap: "Demographic composition of voyages that disembarked in the Americas."
-#| fig-alt: "Boxplots of percent embarked by demographic category, restricted to voyages with outcome 'Slaves disembarked in Americas'. Men, women and children are on the x-axis; percentage on the y-axis."
+#| fig-alt: "Boxplots of the proportion embarked by demographic category, restricted to voyages with outcome 'Slaves disembarked in Americas'. Men, women and children are on the x-axis; proportion on the y-axis."
 #| warning: false
 dat_long |>
   filter(outcome == "Slaves disembarked in Americas") |>
-  ggplot(aes(x = demographic, y = percent, fill = demographic)) +
+  ggplot(aes(x = demographic, y = proportion, fill = demographic)) +
   geom_boxplot(show.legend = FALSE) +
   scale_fill_viridis_d(option = "E") +
   labs(x = NULL,
-       y = "Percent of those embarked",
+       y = "Proportion of those embarked",
        title = "Demographic composition of voyages disembarking in the Americas")
 ```
 
@@ -135,17 +118,17 @@ First, save two plots as objects.
 #| warning: false
 men_plot <- dat_long |>
   filter(demographic == "men") |>
-  ggplot(aes(start_port, percent, fill = start_port)) +
+  ggplot(aes(start_port, proportion, fill = start_port)) +
   geom_boxplot(show.legend = FALSE, alpha = 0.6) +
   scale_fill_viridis_d(option = "E") +
-  labs(x = NULL, y = "% men")
+  labs(x = NULL, y = "Proportion men")
 
 children_plot <- dat_long |>
   filter(demographic == "children") |>
-  ggplot(aes(start_port, percent, fill = start_port)) +
+  ggplot(aes(start_port, proportion, fill = start_port)) +
   geom_boxplot(show.legend = FALSE, alpha = 0.6) +
   scale_fill_viridis_d(option = "E") +
-  labs(x = NULL, y = "% children")
+  labs(x = NULL, y = "Proportion children")
 ```
 
 Then combine them.
@@ -153,7 +136,8 @@ Then combine them.
 ```{r}
 #| label: fig-patchwork-side
 #| fig-cap: "Two boxplots side by side with patchwork."
-#| fig-alt: "Two boxplots arranged horizontally. The left shows percentage of men by port; the right shows percentage of children by port."
+#| fig-alt: "Two boxplots arranged horizontally. The left shows the proportion of men by port; the right shows the proportion of children by port."
+#| warning: false
 men_plot + children_plot
 ```
 
@@ -163,6 +147,7 @@ Stacked vertically.
 #| label: fig-patchwork-stack
 #| fig-cap: "The same two boxplots stacked vertically."
 #| fig-alt: "The same two boxplots arranged vertically rather than side by side."
+#| warning: false
 men_plot / children_plot
 ```
 
@@ -172,6 +157,7 @@ men_plot / children_plot
 #| label: fig-patchwork-annotated
 #| fig-cap: "Combined figure with a shared title."
 #| fig-alt: "Side-by-side boxplots with a shared title 'Demographic composition by port of origin'."
+#| warning: false
 (men_plot + children_plot) +
   plot_annotation(title = "Demographic composition by port of origin")
 ```
@@ -183,7 +169,7 @@ See the [`patchwork` documentation](https://patchwork.data-imaginist.com/) for m
 ::: {.callout-tip}
 ## Activity 1
 
-Build a third plot showing the percentage of women by port, and combine all three plots (`men_plot`, `women_plot`, `children_plot`) in a single row.
+Build a third plot showing the proportion of women by port, and combine all three plots (`men_plot`, `women_plot`, `children_plot`) in a single row.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -192,10 +178,10 @@ Build a third plot showing the percentage of women by port, and combine all thre
 ```{r eval = FALSE}
 women_plot <- dat_long |>
   filter(demographic == "women") |>
-  ggplot(aes(start_port, percent, fill = start_port)) +
+  ggplot(aes(start_port, proportion, fill = start_port)) +
   geom_boxplot(show.legend = FALSE, alpha = 0.6) +
   scale_fill_viridis_d(option = "E") +
-  labs(x = NULL, y = "% women")
+  labs(x = NULL, y = "Proportion women")
 
 men_plot + women_plot + children_plot
 ```

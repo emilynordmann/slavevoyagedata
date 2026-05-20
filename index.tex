@@ -1,0 +1,2518 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  english,
+  letterpaper,
+]{book}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[english]{selnolig} % disable illegal ligatures
+\fi
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{booktabs}
+
+\usepackage{tcolorbox}
+\usepackage[T1]{fontenc}
+
+\definecolor{dangcol}{RGB}{152,62,130}
+\definecolor{warncol}{RGB}{245,220,112}
+\definecolor{infocol}{RGB}{70,122,172}
+\definecolor{trycol}{RGB}{97,88,156}
+
+\newtcolorbox{dangerous}{
+  colback=dangcol!10,
+  colframe=dangcol,
+  coltext=black,
+  boxsep=5pt,
+  arc=4pt
+}
+
+\newtcolorbox{warning}{
+  colback=warncol!10,
+  colframe=warncol,
+  coltext=black,
+  boxsep=5pt,
+  arc=4pt
+}
+
+\newtcolorbox{info}{
+  colback=infocol!10,
+  colframe=infocol,
+  coltext=black,
+  boxsep=5pt,
+  arc=4pt
+}
+
+\newtcolorbox{try}{
+  colback=trycol!10,
+  colframe=trycol,
+  coltext=black,
+  boxsep=5pt,
+  arc=4pt
+}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Intro to Data Visualisation Using R and the Slave Voyages dataset},
+  pdfauthor={Emily Nordmann},
+  pdflang={en},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Intro to Data Visualisation Using R and the Slave Voyages
+dataset}
+\author{Emily Nordmann}
+\date{}
+\begin{document}
+\frontmatter
+\maketitle
+
+\renewcommand*\contentsname{Table of contents}
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+
+\mainmatter
+\bookmarksetup{startatroot}
+
+\chapter*{Overview}\label{overview}
+\addcontentsline{toc}{chapter}{Overview}
+
+\markboth{Overview}{Overview}
+
+This is a beginner's guide to data visualisation in R using
+\texttt{ggplot2}. It assumes you have installed R and RStudio and know
+the absolute basics, such as how to run a line of code and load a
+package. If you are starting from scratch, see
+Appendix~\ref{sec-installing-r}.
+
+The dataset used throughout is a subset of the
+\href{https://www.slavevoyages.org/}{Trans-Atlantic Slave Trade
+Database}, curated by the Slave Voyages project. The full database
+records 36,000 individual slaving voyages between 1514 and 1866. The
+subset used here focuses on voyages that originated in Britain. The
+history these data describe is brutal. The figures you will produce
+show, among other things, mortality rates, age and sex composition of
+the people forcibly transported, and how the trade scaled with British
+involvement over time. The tutorial treats the data with the seriousness
+the subject demands.
+
+\section*{Intended learning outcomes}\label{intended-learning-outcomes}
+\addcontentsline{toc}{section}{Intended learning outcomes}
+
+\markright{Intended learning outcomes}
+
+By the end of this book you will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Load tabular data into R with \texttt{read\_csv()} and inspect it
+\item
+  Clean variable names and types using \texttt{clean\_names()},
+  \texttt{rename()}, \texttt{factor()} and \texttt{mutate()}
+\item
+  Build plots in layers using the \texttt{ggplot2} grammar of graphics
+\item
+  Choose an appropriate plot type for the data at hand
+\item
+  Customise axes, scales, themes and colours
+\item
+  Reshape data with \texttt{pivot\_longer()} to plot grouped
+  distributions
+\item
+  Combine plots with \texttt{patchwork}
+\item
+  Save plots in publication-ready formats with alt text
+\end{itemize}
+
+\section*{Citing}\label{citing}
+\addcontentsline{toc}{section}{Citing}
+
+\markright{Citing}
+
+If you use this tutorial in teaching or in your own writing, please cite
+it as:
+
+Nordmann, E. (2026). \emph{Intro to Data Visualisation Using R and the
+Slave Voyages dataset.}
+\url{https://github.com/emilynordmann/slavevoyagedata}
+
+If you want a fuller treatment of data visualisation aimed at
+researchers, see Nordmann et al. (2022), the published article that
+accompanies the introdataviz tutorial.
+
+\section*{Acknowledgement}\label{acknowledgement}
+\addcontentsline{toc}{section}{Acknowledgement}
+
+\markright{Acknowledgement}
+
+This tutorial was originally written in 2020 at the request of
+\href{https://twitter.com/DavidTree}{David Tree} for anti-racism
+curriculum materials. It has been revised for Quarto and updated to
+current tidyverse practice. The code is available under a Creative
+Commons Attribution-ShareAlike licence on
+\href{https://github.com/emilynordmann/slavevoyagedata}{GitHub} and you
+are welcome to adapt it for your own teaching without further
+permission.
+
+\bookmarksetup{startatroot}
+
+\chapter{Getting started}\label{sec-getting-started}
+
+\section{Intended learning outcomes}\label{intended-learning-outcomes-1}
+
+By the end of this chapter you will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Load the \texttt{tidyverse}, \texttt{janitor} and \texttt{patchwork}
+  packages
+\item
+  Read a CSV file into R with \texttt{read\_csv()} and verify the import
+  worked
+\item
+  Standardise messy column names with \texttt{clean\_names()} from the
+  \texttt{janitor} package
+\item
+  Rename variables with \texttt{rename()} to make them easier to work
+  with
+\item
+  Convert columns to factors with \texttt{factor()}, controlling the
+  display order
+\item
+  Use \texttt{mutate()} and \texttt{across()} to transform several
+  columns at once
+\end{itemize}
+
+\section{Functions used}\label{functions-used}
+
+\begin{itemize}
+\tightlist
+\item
+  tidyverse (load with \texttt{library(tidyverse)})
+
+  \begin{itemize}
+  \tightlist
+  \item
+    readr: \texttt{read\_csv()}
+  \item
+    dplyr: \texttt{rename()}, \texttt{mutate()}, \texttt{across()}
+  \item
+    tibble: \texttt{glimpse()}
+  \item
+    purrr: \texttt{map\_chr()}
+  \end{itemize}
+\item
+  janitor: \texttt{clean\_names()}
+\item
+  base R: \texttt{summary()}, \texttt{str()}, \texttt{factor()},
+  \texttt{c()}
+\end{itemize}
+
+\section{Set-up}\label{set-up}
+
+For this tutorial you will find it helpful to write your code in a
+\href{https://quarto.org/}{Quarto} document. Quarto lets you intersperse
+code, output and notes in a single file that is easy to share. If you
+have not used Quarto before, the
+\href{https://psyteachr.github.io/ads-v3/02-reports.html}{Quarto
+Reports} chapter of \texttt{ads-v3} is a good starting point.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Open RStudio.
+\item
+  Create a new RStudio project in a fresh folder.
+\item
+  Download this data into that folder.
+\item
+  Create a new Quarto document.
+\item
+  Replace the default setup chunk at the top of your \texttt{.qmd} file
+  with the one below.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\InformationTok{\textasciigrave{}\textasciigrave{}\textasciigrave{}\{r\}}
+\CommentTok{\#| label: setup}
+\CommentTok{\#| include: false}
+
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(janitor)}
+\FunctionTok{library}\NormalTok{(patchwork)}
+\InformationTok{\textasciigrave{}\textasciigrave{}\textasciigrave{}}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Loading packages}\label{loading-packages}
+
+The main package we will use is the \texttt{tidyverse} collection. This
+loads \texttt{readr} for importing data, \texttt{dplyr} for wrangling,
+\texttt{tidyr} for reshaping, and \texttt{ggplot2} for plotting, along
+with several others. We will also use \texttt{janitor} to tidy up the
+column names, and \texttt{patchwork} later to combine multiple plots
+into a single figure. \texttt{janitor} and \texttt{patchwork} are
+separate packages, so install them first with
+\texttt{install.packages(c("janitor",\ "patchwork"))} if you have not
+already.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(janitor)}
+\FunctionTok{library}\NormalTok{(patchwork)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+You only need to install a package once
+(\texttt{install.packages("tidyverse")}) but you need to load it with
+\texttt{library()} every time you start a new R session.
+
+\end{tcolorbox}
+
+\section{Loading the data}\label{loading-the-data}
+
+The data are in a CSV file called \texttt{data.csv}. We read them in
+with \texttt{read\_csv()} from \texttt{readr}. The result is stored in
+an object called \texttt{dat}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+When \texttt{read\_csv()} runs successfully it prints a column
+specification telling you what type of data it found in each column.
+\texttt{chr} means character (text), \texttt{dbl} means double (decimal
+number). If you get the error message
+\texttt{…does\ not\ exist\ in\ current\ working\ directory} you have
+almost certainly mis-typed the file name, forgotten the \texttt{.csv}
+extension, or saved the data outside your project folder. If you get
+\texttt{could\ not\ find\ function\ "read\_csv"} you have not loaded the
+\texttt{tidyverse}.
+
+After importing, always check that the resulting table looks like you
+expect. Click \texttt{dat} in the Environment pane, or run
+\texttt{glimpse(dat)} in the console.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{glimpse}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Rows: 10,507
+Columns: 13
+$ `Voyage ID`                                                              <dbl> ~
+$ `Vessel name`                                                            <chr> ~
+$ `Voyage itinerary imputed port where began (ptdepimp) place`             <chr> ~
+$ `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)` <chr> ~
+$ `Total embarked`                                                         <dbl> ~
+$ `Total disembarked`                                                      <dbl> ~
+$ `Year of arrival at port of disembarkation`                              <dbl> ~
+$ `Percent men`                                                            <dbl> ~
+$ `Percent women`                                                          <dbl> ~
+$ `Percent children`                                                       <dbl> ~
+$ `Slaves died during middle passage`                                      <dbl> ~
+$ `Mortality rate`                                                         <dbl> ~
+$ `Slaves outcome label`                                                   <chr> ~
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  The dataset has \_\_\_\_\_ rows of data and \_\_ columns.
+\end{itemize}
+
+\section{House-keeping}\label{house-keeping}
+
+The column names are informative but long, and several contain spaces,
+capital letters and brackets. That makes them awkward to type and to
+refer to in code. As a rule, variable names should avoid spaces and
+special characters. Pick a naming convention (\texttt{my.var},
+\texttt{myVar}, \texttt{my\_var}) and stick with it. This tutorial uses
+underscores and no capitals, a style often called snake case.
+
+The \texttt{clean\_names()} function from the \texttt{janitor} package
+does the mechanical part of this for us. It converts every column name
+to lower case and replaces spaces and brackets with underscores, so we
+no longer need back-ticks to refer to a column.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_clean }\OtherTok{\textless{}{-}} \FunctionTok{clean\_names}\NormalTok{(dat)}
+
+\FunctionTok{names}\NormalTok{(dat\_clean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+ [1] "voyage_id"                                                           
+ [2] "vessel_name"                                                         
+ [3] "voyage_itinerary_imputed_port_where_began_ptdepimp_place"            
+ [4] "voyage_itinerary_imputed_principal_place_of_slave_purchase_mjbyptimp"
+ [5] "total_embarked"                                                      
+ [6] "total_disembarked"                                                   
+ [7] "year_of_arrival_at_port_of_disembarkation"                           
+ [8] "percent_men"                                                         
+ [9] "percent_women"                                                       
+[10] "percent_children"                                                    
+[11] "slaves_died_during_middle_passage"                                   
+[12] "mortality_rate"                                                      
+[13] "slaves_outcome_label"                                                
+\end{verbatim}
+
+Every name is now consistent snake case. Two of them,
+\texttt{total\_embarked} and \texttt{total\_disembarked}, are already
+short enough to use as they are. The rest are still long, because
+\texttt{clean\_names()} standardises names but cannot know which ones we
+would like to be shorter.
+
+For that we use \texttt{rename()}. The syntax is
+\texttt{new\_name\ =\ old\_name}. Because \texttt{clean\_names()} has
+already removed the spaces, no back-ticks are needed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_rename }\OtherTok{\textless{}{-}} \FunctionTok{rename}\NormalTok{(dat\_clean,}
+                     \AttributeTok{id =}\NormalTok{ voyage\_id,}
+                     \AttributeTok{vessel =}\NormalTok{ vessel\_name,}
+                     \AttributeTok{start\_port =}\NormalTok{ voyage\_itinerary\_imputed\_port\_where\_began\_ptdepimp\_place,}
+                     \AttributeTok{purchase\_place =}\NormalTok{ voyage\_itinerary\_imputed\_principal\_place\_of\_slave\_purchase\_mjbyptimp,}
+                     \AttributeTok{arrival\_year =}\NormalTok{ year\_of\_arrival\_at\_port\_of\_disembarkation,}
+                     \AttributeTok{men =}\NormalTok{ percent\_men,}
+                     \AttributeTok{women =}\NormalTok{ percent\_women,}
+                     \AttributeTok{children =}\NormalTok{ percent\_children,}
+                     \AttributeTok{died =}\NormalTok{ slaves\_died\_during\_middle\_passage,}
+                     \AttributeTok{mortality =}\NormalTok{ mortality\_rate,}
+                     \AttributeTok{outcome =}\NormalTok{ slaves\_outcome\_label)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+When code starts to spread across many lines, pressing Enter after a
+comma to break the line makes it much easier to read.
+
+\end{tcolorbox}
+
+\section{Checking variable types}\label{checking-variable-types}
+
+After importing and renaming, check what R thinks each column is. Three
+useful options are:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(dat\_rename)}
+\FunctionTok{summary}\NormalTok{(dat\_rename)}
+\FunctionTok{map\_chr}\NormalTok{(dat\_rename, class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  How many of the variables are character (text) variables? \_
+\item
+  How many of the variables are numeric (double)? \_
+\end{itemize}
+
+Several are correct as-is, but two issues need attention. The
+\texttt{id} column contains numbers, but those numbers are identifiers,
+not quantities you would average. The character columns
+(\texttt{vessel}, \texttt{start\_port}, \texttt{purchase\_place},
+\texttt{outcome}) hold a fixed set of categories rather than free text.
+Both kinds of column should be factors, which is how R represents
+categorical data.
+
+\section{Converting to factors}\label{converting-to-factors}
+
+We use \texttt{mutate()} to overwrite each column with a factor version
+of itself. \texttt{factor()} lets us set the display order with the
+\texttt{levels} argument, which matters because R will otherwise sort
+categories alphabetically in plots.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_final }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(dat\_rename,}
+                    \AttributeTok{id             =} \FunctionTok{factor}\NormalTok{(id),}
+                    \AttributeTok{vessel         =} \FunctionTok{factor}\NormalTok{(vessel),}
+                    \AttributeTok{purchase\_place =} \FunctionTok{factor}\NormalTok{(purchase\_place),}
+                    \AttributeTok{outcome        =} \FunctionTok{factor}\NormalTok{(outcome),}
+                    \AttributeTok{start\_port     =} \FunctionTok{factor}\NormalTok{(start\_port,}
+                                            \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Liverpool"}\NormalTok{,}
+                                                       \StringTok{"London"}\NormalTok{,}
+                                                       \StringTok{"Bristol"}\NormalTok{,}
+                                                       \FunctionTok{sort}\NormalTok{(}\FunctionTok{setdiff}\NormalTok{(}\FunctionTok{unique}\NormalTok{(start\_port),}
+                                                                    \FunctionTok{c}\NormalTok{(}\StringTok{"Liverpool"}\NormalTok{, }\StringTok{"London"}\NormalTok{, }\StringTok{"Bristol"}\NormalTok{))))))}
+\end{Highlighting}
+\end{Shaded}
+
+We have given \texttt{start\_port} an explicit order. Liverpool, London
+and Bristol come first because we will focus on those three; the
+remaining ports follow in alphabetical order. This means later plots
+will show the three big British ports in a meaningful order, rather than
+the default alphabetical Bristol, Liverpool, London.
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{A quicker way for batch conversions}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+If you do not need to control the levels for each column individually,
+you can convert several columns at once with \texttt{across()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_final }\OtherTok{\textless{}{-}} \FunctionTok{mutate}\NormalTok{(dat\_rename,}
+                    \FunctionTok{across}\NormalTok{(}\FunctionTok{c}\NormalTok{(id, vessel, purchase\_place, outcome, start\_port),}
+\NormalTok{                           as.factor))}
+\end{Highlighting}
+\end{Shaded}
+
+This is more compact but loses the explicit ordering of
+\texttt{start\_port}. See the
+\href{https://dplyr.tidyverse.org/reference/across.html}{\texttt{dplyr}
+documentation} for more.
+
+\end{tcolorbox}
+
+Run \texttt{summary()} again on \texttt{dat\_final} and look at how the
+factor variables are now summarised by their counts per level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(dat\_final)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Activities}\label{activities}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity 1}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Run \texttt{glimpse(dat\_final)} and identify which columns are now
+factors. How many factor columns are there? \_
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity 2}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+The \texttt{mortality} column is a proportion. Use
+\texttt{summary(dat\_final\$mortality)} to find its mean. To two decimal
+places, what is it? \_\_\_\_
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Solution to Activity 2}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(dat\_final}\SpecialCharTok{$}\NormalTok{mortality)}
+\end{Highlighting}
+\end{Shaded}
+
+The mean mortality rate across the 10,507 voyages in this subset is
+about 0.18 (18\%).
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Basic plots}\label{sec-basic-plots}
+
+\section{Intended learning outcomes}\label{intended-learning-outcomes-2}
+
+By the end of this chapter you will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Explain what is meant by a ``grammar of graphics'' and a ``layer'' in
+  \texttt{ggplot2}
+\item
+  Build a scatterplot using \texttt{geom\_point()}
+\item
+  Add a line of best fit using \texttt{geom\_smooth()}
+\item
+  Plot the distribution of a single continuous variable with
+  \texttt{geom\_histogram()}
+\item
+  Plot counts with \texttt{geom\_bar()} and pre-computed values with
+  \texttt{geom\_col()}
+\item
+  Plot grouped distributions with \texttt{geom\_boxplot()} and
+  \texttt{geom\_violin()}
+\end{itemize}
+
+\section{Functions used}\label{functions-used-1}
+
+\begin{itemize}
+\tightlist
+\item
+  ggplot2: \texttt{ggplot()}, \texttt{aes()}, \texttt{geom\_point()},
+  \texttt{geom\_smooth()}, \texttt{geom\_histogram()},
+  \texttt{geom\_bar()}, \texttt{geom\_col()}, \texttt{geom\_boxplot()},
+  \texttt{geom\_violin()}
+\item
+  dplyr: \texttt{filter()}, \texttt{group\_by()}, \texttt{count()},
+  \texttt{arrange()}, \texttt{summarise()}
+\end{itemize}
+
+\section{The grammar of graphics}\label{the-grammar-of-graphics}
+
+\texttt{ggplot2} is so powerful because it builds plots in layers. The
+first layer is always the base of the plot, set up with
+\texttt{ggplot()}, which specifies the data and the aesthetic mappings
+(which variables go on which axis, or are mapped to colour or shape).
+Subsequent layers add geoms (geometric objects such as points, bars, or
+boxes), scales, themes and so on. Layers are added with \texttt{+}.
+
+It is helpful to think of any plot as having several elements that sit
+semi-transparently on top of each other. A scatterplot with a line of
+best fit, for example, is the base layer, then the points layer, then
+the smoother layer.
+
+\section{Scatterplots}\label{scatterplots}
+
+A scatterplot is appropriate when both axes are continuous. The base
+layer below maps \texttt{arrival\_year} to the x-axis and
+\texttt{total\_embarked} to the y-axis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ dat\_final, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ arrival\_year, }\AttributeTok{y =}\NormalTok{ total\_embarked))}
+\end{Highlighting}
+\end{Shaded}
+
+Run that line on its own. You get an empty plot with the axes drawn but
+no data. That is because we have not added a geom. Given the variable
+types, what type of plot is likely to be built on this base layer?
+
+\begin{itemize}
+\tightlist
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\Alph{enumi})}
+  \tightlist
+  \item
+    Bar chart\\
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\Alph{enumi})}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    Scatterplot\\
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\Alph{enumi})}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    Histogram
+  \end{enumerate}
+\end{itemize}
+
+We add the points with \texttt{geom\_point()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_final, }\FunctionTok{aes}\NormalTok{(arrival\_year, total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-scatter-points-1.pdf}
+
+}
+
+\caption{\label{fig-scatter-points}Number embarked on each voyage,
+plotted against the year the voyage arrived in port.}
+
+\end{figure}%
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+You will see a warning saying
+\texttt{Removed\ 422\ rows\ containing\ missing\ values\ or\ values\ outside\ the\ scale\ range}.
+That means 422 voyages in the data have a missing value for either
+\texttt{arrival\_year} or \texttt{total\_embarked}. \texttt{ggplot2}
+quietly drops them. We will look at handling missing data directly in
+Section~\ref{sec-wide-to-long}.
+
+\end{tcolorbox}
+
+There are so many points that it is hard to see the trend. That is not a
+fault of the plot; it is a reflection of the scale of the trade.
+
+\section{Adding a line of best fit}\label{adding-a-line-of-best-fit}
+
+A smoother makes it easier to see the trend. \texttt{geom\_smooth()}
+uses LOESS by default for samples smaller than 1000 observations and GAM
+otherwise. For a linear trend, set \texttt{method\ =\ "lm"}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{loess\_plot }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dat\_final, }\FunctionTok{aes}\NormalTok{(arrival\_year, total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{()}
+
+\NormalTok{linear\_plot }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dat\_final, }\FunctionTok{aes}\NormalTok{(arrival\_year, total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ x)}
+
+\NormalTok{loess\_plot }\SpecialCharTok{+}\NormalTok{ linear\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-scatter-smooth-1.pdf}
+
+}
+
+\caption{\label{fig-scatter-smooth}Scatterplot with two smoothers, LOESS
+(left) and linear (right).}
+
+\end{figure}%
+
+The combination of \texttt{loess\_plot\ +\ linear\_plot} is from the
+\texttt{patchwork} package, which we cover properly in
+Section~\ref{sec-patchwork}.
+
+\section{Layer order matters}\label{layer-order-matters}
+
+If you add \texttt{geom\_smooth()} first and \texttt{geom\_point()}
+second, the points are drawn on top of the smoother.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_final, }\FunctionTok{aes}\NormalTok{(arrival\_year, total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-scatter-wrong-order-1.pdf}
+
+}
+
+\caption{\label{fig-scatter-wrong-order}Layers in the wrong order:
+points drawn on top of the smoother.}
+
+\end{figure}%
+
+\section{Histograms}\label{histograms}
+
+A histogram shows the distribution of a single continuous variable. The
+x-axis is divided into bins and the y-axis shows how many observations
+fall into each bin.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_final, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-histogram-default-1.pdf}
+
+}
+
+\caption{\label{fig-histogram-default}Default histogram of total
+embarked per voyage.}
+
+\end{figure}%
+
+The default uses 30 bins and you will see the message
+\texttt{stat\_bin()\ using\ bins\ =\ 30.\ Pick\ better\ value\ with\ binwidth}.
+It is good practice to set \texttt{binwidth} (the size of each bin)
+explicitly, along with \texttt{boundary\ =\ 0} so the bins start at
+sensible round numbers.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_final, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{50}\NormalTok{, }\AttributeTok{boundary =} \DecValTok{0}\NormalTok{,}
+                 \AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{colour =} \StringTok{"black"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-histogram-binwidth-1.pdf}
+
+}
+
+\caption{\label{fig-histogram-binwidth}Histogram with explicit binwidth
+of 50 starting at 0.}
+
+\end{figure}%
+
+\texttt{fill} sets the inside colour of each bar; \texttt{colour} sets
+the outline.
+
+\section{Bar charts of counts}\label{bar-charts-of-counts}
+
+\texttt{geom\_bar()} counts the number of observations in each level of
+its x-aesthetic. You do not specify a y-axis because the y-axis is
+always a count.
+
+If we try to plot \texttt{start\_port} directly, the result is unusable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_final, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+There are too many ports to fit on one axis. We can confirm this with a
+quick count.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{port\_counts }\OtherTok{\textless{}{-}}\NormalTok{ dat\_final }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(start\_port) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{count}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(n))}
+
+\NormalTok{port\_counts}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 34 x 2
+# Groups:   start_port [34]
+   start_port                          n
+   <fct>                           <int>
+ 1 Liverpool                        4973
+ 2 London                           3126
+ 3 Bristol                          2083
+ 4 Lancaster                         125
+ 5 Whitehaven                         64
+ 6 Plymouth                           32
+ 7 Great Britain, port unspecified    15
+ 8 Greenock                           11
+ 9 Poole                               9
+10 Chester                             7
+# i 24 more rows
+\end{verbatim}
+
+Liverpool, London and Bristol dominate. We will filter to those three
+for the next several plots.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_filter }\OtherTok{\textless{}{-}}\NormalTok{ dat\_final }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(start\_port }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Liverpool"}\NormalTok{, }\StringTok{"London"}\NormalTok{, }\StringTok{"Bristol"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+The \texttt{\%in\%} operator reads as ``is one of''.
+\texttt{dat\_filter} keeps only the rows where \texttt{start\_port}
+matches one of the three values.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-bar-ports-1.pdf}
+
+}
+
+\caption{\label{fig-bar-ports}Number of voyages originating in each of
+the three main British ports.}
+
+\end{figure}%
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-warning-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, coltitle=black, colbacktitle=quarto-callout-warning-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+This bar chart shows the number of \emph{voyages}, not the number of
+people. Each Liverpool voyage trafficked, on average, hundreds of
+people, so the human cost is far larger than the bar heights suggest. We
+will plot the human totals shortly.
+
+\end{tcolorbox}
+
+\section{\texorpdfstring{Bar charts of pre-computed values
+(\texttt{geom\_col()})}{Bar charts of pre-computed values (geom\_col())}}\label{bar-charts-of-pre-computed-values-geom_col}
+
+When you already have the y-values (because you computed them yourself),
+use \texttt{geom\_col()} instead of \texttt{geom\_bar()}. The default
+statistic for \texttt{geom\_col()} is \texttt{"identity"}: it uses the
+numbers you supplied as-is.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{port\_summary }\OtherTok{\textless{}{-}}\NormalTok{ dat\_filter }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(start\_port) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{embarked =} \FunctionTok{sum}\NormalTok{(total\_embarked, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+            \AttributeTok{.groups =} \StringTok{"drop"}\NormalTok{)}
+
+\NormalTok{port\_summary}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 3 x 2
+  start_port embarked
+  <fct>         <dbl>
+1 Liverpool   1337530
+2 London       832944
+3 Bristol      563796
+\end{verbatim}
+
+\begin{itemize}
+\item
+  \texttt{na.rm\ =\ TRUE} tells \texttt{sum()} to ignore missing values
+  when computing the total. Without it, any single missing value would
+  produce \texttt{NA} for the whole group.
+\item
+  \texttt{.groups\ =\ "drop"} removes the grouping after summarising,
+  which is the modern \texttt{dplyr} recommendation; without it you get
+  a ``regrouping'' message.
+\item
+  How many enslaved people embarked on ships originating in Liverpool?
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\Alph{enumi})}
+  \tightlist
+  \item
+    \textasciitilde832 thousand\\
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\Alph{enumi})}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    \textasciitilde1.3 million\\
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\Alph{enumi})}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    56 thousand
+  \end{enumerate}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(port\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ embarked, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-col-totals-1.pdf}
+
+}
+
+\caption{\label{fig-col-totals}Total number of enslaved people embarked
+on ships originating in each port.}
+
+\end{figure}%
+
+\section{Boxplots}\label{boxplots}
+
+A boxplot shows the median, interquartile range and outliers of a
+continuous variable, optionally broken down by a categorical variable on
+the x-axis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-boxplot-1.pdf}
+
+}
+
+\caption{\label{fig-boxplot}Distribution of the number embarked per
+voyage, by port of origin.}
+
+\end{figure}%
+
+The median number of people embarked per voyage was just over 250, but
+in many cases the number was much higher, particularly for ships
+originating in Liverpool.
+
+\section{Violin-boxplots}\label{violin-boxplots}
+
+A violin plot shows the full distribution as a mirrored density.
+Combined with a thin boxplot inside it, the result is much more
+informative than a boxplot alone.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_violin}\NormalTok{(}\AttributeTok{trim =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-violin-boxplot-1.pdf}
+
+}
+
+\caption{\label{fig-violin-boxplot}Violin-boxplots of the number
+embarked per voyage.}
+
+\end{figure}%
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+The order of the layers matters. If you draw the boxplot first and the
+violin on top, the boxplot is hidden. Try changing
+\texttt{trim\ =\ FALSE} to \texttt{TRUE} and \texttt{width\ =\ 0.2} to
+\texttt{0.5} to see what each argument does.
+
+\end{tcolorbox}
+
+\section{Activities}\label{activities-1}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity 1}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Modify the histogram so the binwidth is 25 instead of 50. Does the peak
+shift?
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Solution}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_final, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{25}\NormalTok{, }\AttributeTok{boundary =} \DecValTok{0}\NormalTok{,}
+                 \AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{colour =} \StringTok{"black"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The peak stays in roughly the same place (200-300) but the shape is more
+detailed. Smaller bins reveal structure that larger bins smooth over, at
+the cost of more visual noise.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity 2}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Build a boxplot of \texttt{mortality} by \texttt{start\_port} (still
+using \texttt{dat\_filter}).
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Solution}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ mortality)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{02-basic-plots_files/figure-pdf/fig-mortality-boxplot-1.pdf}
+
+}
+
+\caption{\label{fig-mortality-boxplot}Mortality rate per voyage by port
+of origin.}
+
+\end{figure}%
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Customising plots}\label{sec-customising}
+
+\section{Intended learning outcomes}\label{intended-learning-outcomes-3}
+
+By the end of this chapter you will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Use \texttt{scale\_*} functions to control axis labels, breaks and
+  limits
+\item
+  Distinguish \texttt{coord\_cartesian()} from \texttt{scale\_*} limits
+\item
+  Apply built-in themes and set a global default with
+  \texttt{theme\_set()}
+\item
+  Add titles, subtitles and captions with \texttt{labs()}
+\item
+  Use the colour-blind-friendly \texttt{viridis} palettes
+\end{itemize}
+
+\section{Functions used}\label{functions-used-2}
+
+\begin{itemize}
+\tightlist
+\item
+  ggplot2: \texttt{scale\_x\_discrete()},
+  \texttt{scale\_x\_continuous()}, \texttt{scale\_y\_continuous()},
+  \texttt{coord\_cartesian()}, \texttt{scale\_fill\_viridis\_d()},
+  \texttt{scale\_colour\_viridis\_d()}, \texttt{labs()},
+  \texttt{theme\_minimal()}, \texttt{theme\_bw()},
+  \texttt{theme\_classic()}, \texttt{theme\_set()}
+\item
+  scales: \texttt{label\_comma()} (replacement for
+  \texttt{scales::comma})
+\end{itemize}
+
+\section{Scientific notation and number
+formatting}\label{scientific-notation-and-number-formatting}
+
+The column chart from Chapter~\ref{sec-basic-plots} uses scientific
+notation on the y-axis because the numbers are so large.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(port\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ embarked, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{03-customising_files/figure-pdf/fig-col-scientific-1.pdf}
+
+}
+
+\caption{\label{fig-col-scientific}Total embarked, with the default
+y-axis in scientific notation.}
+
+\end{figure}%
+
+We can override that with \texttt{scale\_y\_continuous()} and a
+label-formatting function from the \texttt{scales} package.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(port\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ embarked, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_comma}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{03-customising_files/figure-pdf/fig-col-comma-1.pdf}
+
+}
+
+\caption{\label{fig-col-comma}Total embarked, with the y-axis formatted
+with thousands separators.}
+
+\end{figure}%
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\texttt{scales::label\_comma()} is the modern factory function. The
+older \texttt{scales::comma} (no parentheses) still works but is being
+phased out.
+
+\end{tcolorbox}
+
+\section{Axis labels and titles}\label{axis-labels-and-titles}
+
+\texttt{labs()} is the most concise way to set axis labels, the plot
+title, subtitle and caption.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(port\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ embarked, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_comma}\NormalTok{()) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Port of origin"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Number embarked"}\NormalTok{,}
+       \AttributeTok{title =} \StringTok{"Number embarked on ships originating in British ports"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{03-customising_files/figure-pdf/fig-col-labs-1.pdf}
+
+}
+
+\caption{\label{fig-col-labs}Adding axis labels and a title.}
+
+\end{figure}%
+
+\section{Themes}\label{themes}
+
+\texttt{ggplot2} has several built-in themes. We have already set
+\texttt{theme\_minimal()} as the global default in the project setup
+(see \texttt{R/my\_setup.R}). You can override it for an individual plot
+by adding a different theme as a layer.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(port\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ embarked, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_comma}\NormalTok{()) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{)}
+
+\NormalTok{(p }\SpecialCharTok{+} \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"theme\_minimal"}\NormalTok{)) }\SpecialCharTok{+}
+\NormalTok{  (p }\SpecialCharTok{+} \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"theme\_bw"}\NormalTok{)) }\SpecialCharTok{+}
+\NormalTok{  (p }\SpecialCharTok{+} \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"theme\_classic"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{03-customising_files/figure-pdf/fig-themes-1.pdf}
+
+}
+
+\caption{\label{fig-themes}The same plot in three different themes.}
+
+\end{figure}%
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Type \texttt{theme\_} in the RStudio source pane and let auto-complete
+show you the available options. To set a theme for every subsequent plot
+in your script, run \texttt{theme\_set(theme\_bw())} near the top.
+
+\end{tcolorbox}
+
+\section{Discrete x-axis labels}\label{discrete-x-axis-labels}
+
+\texttt{scale\_x\_discrete()} lets you control the tick labels on a
+categorical axis without renaming the underlying data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(port\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ embarked, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_discrete}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Liverpool"}\NormalTok{, }\StringTok{"Port of London"}\NormalTok{, }\StringTok{"Bristol"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_comma}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{03-customising_files/figure-pdf/fig-discrete-labels-1.pdf}
+
+}
+
+\caption{\label{fig-discrete-labels}Renaming x-axis ticks with
+scale\_x\_discrete().}
+
+\end{figure}%
+
+\section{Axis limits the right way}\label{axis-limits-the-right-way}
+
+There are two ways to restrict the visible range of an axis, and they
+behave differently.
+
+\texttt{coord\_cartesian(xlim\ =\ c(...),\ ylim\ =\ c(...))} zooms in on
+the plot. Data outside the range are still used in calculations (such as
+drawing a smoother) and are simply cropped from view.
+
+\texttt{scale\_x\_continuous(limits\ =\ c(...))} filters the data. Any
+rows outside the range are dropped before geoms or smoothers see them.
+This can silently change a regression line, so it is usually the wrong
+choice.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{crop }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(arrival\_year, total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_cartesian}\NormalTok{(}\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{1700}\NormalTok{, }\DecValTok{1815}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"coord\_cartesian (crop)"}\NormalTok{)}
+
+\NormalTok{filt }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(arrival\_year, total\_embarked)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{1700}\NormalTok{, }\DecValTok{1815}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"scale\_x\_continuous(limits=)"}\NormalTok{)}
+
+\NormalTok{crop }\SpecialCharTok{+}\NormalTok{ filt}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{03-customising_files/figure-pdf/fig-axis-limits-1.pdf}
+
+}
+
+\caption{\label{fig-axis-limits}coord\_cartesian (left) crops the view;
+scale limits (right) filter the data.}
+
+\end{figure}%
+
+\section{Viridis colour palettes}\label{viridis-colour-palettes}
+
+The default \texttt{ggplot2} colours are not colour-blind friendly. The
+\texttt{viridis} family of palettes is and is now included in
+\texttt{ggplot2}. Use \texttt{scale\_fill\_viridis\_d()} for discrete
+fill (a category mapped to fill), and \texttt{scale\_fill\_viridis\_c()}
+for continuous fill (a number mapped to fill); equivalents exist for
+\texttt{colour}.
+
+The \texttt{option} argument picks one of five palettes:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{"A"} magma
+\item
+  \texttt{"B"} inferno
+\item
+  \texttt{"C"} plasma
+\item
+  \texttt{"D"} viridis (the default)
+\item
+  \texttt{"E"} cividis (the most accessible)
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{make\_plot }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(opt) \{}
+  \FunctionTok{ggplot}\NormalTok{(port\_summary, }\FunctionTok{aes}\NormalTok{(start\_port, embarked, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =}\NormalTok{ opt) }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \FunctionTok{paste}\NormalTok{(}\StringTok{"option ="}\NormalTok{, opt), }\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{\}}
+
+\FunctionTok{make\_plot}\NormalTok{(}\StringTok{"A"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{make\_plot}\NormalTok{(}\StringTok{"B"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{make\_plot}\NormalTok{(}\StringTok{"C"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{make\_plot}\NormalTok{(}\StringTok{"D"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{make\_plot}\NormalTok{(}\StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{plot\_layout}\NormalTok{(}\AttributeTok{nrow =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{03-customising_files/figure-pdf/fig-viridis-options-1.pdf}
+
+}
+
+\caption{\label{fig-viridis-options}Five viridis palettes applied to the
+same column chart.}
+
+\end{figure}%
+
+\section{Activities}\label{activities-2}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity 1}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Apply the \texttt{theme\_classic()} theme to the column chart of port
+totals and edit the y-axis label to ``Total embarked (people)''.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Solution}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(port\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{y =}\NormalTok{ embarked, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_comma}\NormalTok{()) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Port of origin"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Total embarked (people)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity 2}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Replace \texttt{scale\_x\_continuous(limits\ =\ c(1700,\ 1815))} in the
+right-hand panel above with
+\texttt{coord\_cartesian(xlim\ =\ c(1700,\ 1815))}. Confirm that the
+smoother shape is the same as the left panel.
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Grouped plots and overplotting}\label{sec-grouped-plots}
+
+\section{Intended learning outcomes}\label{intended-learning-outcomes-4}
+
+By the end of this chapter you will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Map a categorical variable to \texttt{colour} or \texttt{fill} to
+  display three variables on one plot
+\item
+  Distinguish setting an aesthetic \emph{inside} \texttt{aes()} from
+  setting it as a fixed value \emph{outside} \texttt{aes()}
+\item
+  Split a plot into panels with \texttt{facet\_wrap()} and
+  \texttt{facet\_grid()}
+\item
+  Reduce overplotting with \texttt{alpha} and \texttt{geom\_jitter()}
+\end{itemize}
+
+\section{Functions used}\label{functions-used-3}
+
+\begin{itemize}
+\tightlist
+\item
+  ggplot2: \texttt{aes()}, \texttt{geom\_point()},
+  \texttt{geom\_jitter()}, \texttt{geom\_smooth()},
+  \texttt{facet\_wrap()}, \texttt{facet\_grid()},
+  \texttt{coord\_cartesian()}
+\item
+  \texttt{colour} and \texttt{fill} aesthetics
+\end{itemize}
+
+\section{Adding a third variable with
+colour}\label{adding-a-third-variable-with-colour}
+
+So far our plots have used at most two variables. To show how the number
+who died on the Middle Passage varied across the period of British
+involvement, we plot \texttt{arrival\_year} against \texttt{died} and
+map \texttt{start\_port} to \texttt{colour}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(arrival\_year, died, }\AttributeTok{colour =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.4}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_colour\_viridis\_d}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Year of arrival"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Number of deaths per voyage"}\NormalTok{,}
+       \AttributeTok{colour =} \StringTok{"Port of origin"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{coord\_cartesian}\NormalTok{(}\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{1641}\NormalTok{, }\DecValTok{1815}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{04-grouped-plots_files/figure-pdf/fig-grouped-scatter-1.pdf}
+
+}
+
+\caption{\label{fig-grouped-scatter}Number of deaths per voyage by year
+of arrival, coloured by port of origin.}
+
+\end{figure}%
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Inside or outside \texttt{aes()}?}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\begin{itemize}
+\tightlist
+\item
+  Inside \texttt{aes()}: the aesthetic varies with the data.
+  \texttt{aes(colour\ =\ start\_port)} means each port gets a different
+  colour.
+\item
+  Outside \texttt{aes()}: the aesthetic is a fixed value.
+  \texttt{geom\_point(colour\ =\ "dodgerblue")} colours all points the
+  same regardless of port.
+\end{itemize}
+
+The same rule applies to \texttt{fill}, \texttt{shape}, \texttt{size}
+and \texttt{linetype}.
+
+\end{tcolorbox}
+
+\section{Facetting}\label{facetting}
+
+\texttt{facet\_wrap()} splits the plot into one panel per level of a
+variable. It is an alternative way to display the same three-variable
+relationship and is often easier to read than overlaid colours.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(arrival\_year, died)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{colour =}\NormalTok{ start\_port), }\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.4}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_colour\_viridis\_d}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ start\_port, }\AttributeTok{nrow =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Year of arrival"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Number of deaths per voyage"}\NormalTok{,}
+       \AttributeTok{title =} \StringTok{"Deaths during the Middle Passage, by port of origin"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{coord\_cartesian}\NormalTok{(}\AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{1641}\NormalTok{, }\DecValTok{1815}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{04-grouped-plots_files/figure-pdf/fig-facet-wrap-1.pdf}
+
+}
+
+\caption{\label{fig-facet-wrap}Same data, faceted by port of origin.}
+
+\end{figure}%
+
+The base mapping for the smoother uses no \texttt{colour} mapping, so a
+single smoother is drawn per facet. Inside \texttt{geom\_point()} we map
+\texttt{colour\ =\ start\_port} so the points within each facet are
+coloured by port even though there is only one port per panel; this is
+purely decorative.
+
+\begin{itemize}
+\tightlist
+\item
+  Try changing \texttt{nrow\ =\ 3} to \texttt{nrow\ =\ 1} and rendering.
+  What happens?
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Replace
+\texttt{facet\_wrap(\textasciitilde{}\ start\_port,\ nrow\ =\ 3)} with
+\texttt{facet\_grid(start\_port\ \textasciitilde{}\ .)}. Read the help
+with \texttt{?facet\_grid} to see when one is preferred over the other.
+
+\end{tcolorbox}
+
+\section{Overplotting}\label{sec-overplotting}
+
+The earliest scatterplots in Chapter~\ref{sec-basic-plots} had so many
+overlapping points that the density of the data was hidden. Two
+techniques help.
+
+\texttt{alpha} makes each point semi-transparent, so dense regions
+appear darker.
+
+\texttt{geom\_jitter()} adds a small random offset, so points stacked on
+the same value are visible separately.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{opaque }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(start\_port, mortality)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"alpha = 1 (default)"}\NormalTok{)}
+
+\NormalTok{transparent }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(start\_port, mortality)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"alpha = 0.1"}\NormalTok{)}
+
+\NormalTok{jittered }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(start\_port, mortality)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_jitter}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.3}\NormalTok{, }\AttributeTok{height =} \DecValTok{0}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"geom\_jitter()"}\NormalTok{)}
+
+\NormalTok{opaque }\SpecialCharTok{+}\NormalTok{ transparent }\SpecialCharTok{+}\NormalTok{ jittered}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{04-grouped-plots_files/figure-pdf/fig-overplotting-1.pdf}
+
+}
+
+\caption{\label{fig-overplotting}Three approaches to overplotting.}
+
+\end{figure}%
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-warning-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, coltitle=black, colbacktitle=quarto-callout-warning-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\texttt{geom\_jitter()} moves points slightly. That is fine for showing
+density on a categorical axis, but if you jitter on a continuous axis
+you are misrepresenting the data. Set the \texttt{width} and
+\texttt{height} arguments deliberately. Here we use
+\texttt{height\ =\ 0} so vertical positions are unchanged.
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Reshaping data and combining plots}\label{sec-reshaping}
+
+\section{Intended learning outcomes}\label{intended-learning-outcomes-5}
+
+By the end of this chapter you will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Reshape data from wide to long with \texttt{pivot\_longer()}
+\item
+  Plot grouped distributions using one mapping per categorical column
+  rather than one column per category
+\item
+  Order categorical axes deliberately with \texttt{factor()} or
+  \texttt{fct\_relevel()}
+\item
+  Combine multiple plots into a single figure with the
+  \texttt{patchwork} package
+\end{itemize}
+
+\section{Functions used}\label{functions-used-4}
+
+\begin{itemize}
+\tightlist
+\item
+  tidyr: \texttt{pivot\_longer()}, \texttt{drop\_na()}
+\item
+  forcats: \texttt{fct\_relevel()}
+\item
+  ggplot2: \texttt{geom\_boxplot()}
+\item
+  patchwork: \texttt{+}, \texttt{/}, \texttt{plot\_layout()},
+  \texttt{plot\_annotation()}
+\end{itemize}
+
+\section{From wide to long}\label{sec-wide-to-long}
+
+The dataset has three columns recording the demographic make-up of each
+voyage. \texttt{men}, \texttt{women} and \texttt{children} are each a
+proportion of the people embarked. Most voyages in the database do not
+record this breakdown, so these three columns are missing for the great
+majority of rows. Before reshaping, we drop the voyages with no
+demographic data using \texttt{drop\_na()}, which removes any row that
+is missing a value in one of the named columns.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_demographic }\OtherTok{\textless{}{-}}\NormalTok{ dat\_filter }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{drop\_na}\NormalTok{(men, women, children)}
+
+\FunctionTok{head}\NormalTok{(dat\_demographic[, }\FunctionTok{c}\NormalTok{(}\StringTok{"start\_port"}\NormalTok{, }\StringTok{"men"}\NormalTok{, }\StringTok{"women"}\NormalTok{, }\StringTok{"children"}\NormalTok{)])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 4
+  start_port   men women children
+  <fct>      <dbl> <dbl>    <dbl>
+1 Bristol    0.384 0.232    0.384
+2 Bristol    0.392 0.256    0.352
+3 Bristol    0.488 0.175    0.337
+4 Bristol    0.269 0.223    0.508
+5 Bristol    0.149 0.131    0.720
+6 Bristol    0.477 0.185    0.337
+\end{verbatim}
+
+This is the \emph{wide} form. Each demographic category has its own
+column. To plot them together we need the \emph{long} form, where one
+column holds the category and another holds the value.
+
+\texttt{pivot\_longer()} does the conversion. We tell it which columns
+to gather (\texttt{cols}), the name of the new column that will hold the
+original column names (\texttt{names\_to}) and the name of the new
+column that will hold the values (\texttt{values\_to}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_long }\OtherTok{\textless{}{-}}\NormalTok{ dat\_demographic }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{c}\NormalTok{(men, women, children),}
+               \AttributeTok{names\_to =} \StringTok{"demographic"}\NormalTok{,}
+               \AttributeTok{values\_to =} \StringTok{"proportion"}\NormalTok{)}
+
+\FunctionTok{head}\NormalTok{(dat\_long[, }\FunctionTok{c}\NormalTok{(}\StringTok{"start\_port"}\NormalTok{, }\StringTok{"demographic"}\NormalTok{, }\StringTok{"proportion"}\NormalTok{)])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 3
+  start_port demographic proportion
+  <fct>      <chr>            <dbl>
+1 Bristol    men              0.384
+2 Bristol    women            0.232
+3 Bristol    children         0.384
+4 Bristol    men              0.392
+5 Bristol    women            0.256
+6 Bristol    children         0.352
+\end{verbatim}
+
+Each voyage now appears three times, once per demographic category. The
+column is called \texttt{demographic} because it holds the categories
+\emph{man}, \emph{woman} and \emph{child}. The values are proportions of
+the people embarked.
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+The demographic figures describe only the voyages that recorded them, a
+minority of the total. The original column names \texttt{men},
+\texttt{women} and \texttt{children} are inherited from the source
+database. In the reshaped data, the column \texttt{demographic} holds
+those labels as values.
+
+\end{tcolorbox}
+
+\section{Ordering categorical axes}\label{ordering-categorical-axes}
+
+By default, ggplot will plot \texttt{demographic} in alphabetical order,
+which puts \texttt{children} first. We probably want \texttt{men},
+\texttt{women}, \texttt{children} or the other way around.
+\texttt{fct\_relevel()} from \texttt{forcats} is the easiest way.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_long }\OtherTok{\textless{}{-}}\NormalTok{ dat\_long }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{demographic =} \FunctionTok{fct\_relevel}\NormalTok{(demographic, }\StringTok{"men"}\NormalTok{, }\StringTok{"women"}\NormalTok{, }\StringTok{"children"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Grouped boxplots}\label{grouped-boxplots}
+
+We can now show the distribution of the demographic proportions, broken
+down by port of origin, all on one plot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(dat\_long, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ demographic, }\AttributeTok{y =}\NormalTok{ proportion, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Demographic category"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Proportion of those embarked"}\NormalTok{,}
+       \AttributeTok{fill =} \StringTok{"Port of origin"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{05-reshaping_files/figure-pdf/fig-grouped-box-1.pdf}
+
+}
+
+\caption{\label{fig-grouped-box}Demographic composition of voyages from
+each port.}
+
+\end{figure}%
+
+Men make up the majority of those embarked on every type of voyage, but
+the proportion of women and children varies markedly by port.
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Change the value of \texttt{alpha} and observe what happens. Try
+\texttt{alpha\ =\ 0.2} and \texttt{alpha\ =\ 1}.
+
+\end{tcolorbox}
+
+\section{Piping straight into ggplot}\label{piping-straight-into-ggplot}
+
+You can combine \texttt{filter()} and \texttt{ggplot()} in a single pipe
+rather than creating an intermediate object. The example below takes the
+long-format data, filters to voyages that disembarked in the Americas,
+and plots the result.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat\_long }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(outcome }\SpecialCharTok{==} \StringTok{"Slaves disembarked in Americas"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ demographic, }\AttributeTok{y =}\NormalTok{ proportion, }\AttributeTok{fill =}\NormalTok{ demographic)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Proportion of those embarked"}\NormalTok{,}
+       \AttributeTok{title =} \StringTok{"Demographic composition of voyages disembarking in the Americas"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{05-reshaping_files/figure-pdf/fig-filtered-box-1.pdf}
+
+}
+
+\caption{\label{fig-filtered-box}Demographic composition of voyages that
+disembarked in the Americas.}
+
+\end{figure}%
+
+\section{Combining plots with patchwork}\label{sec-patchwork}
+
+\texttt{patchwork} lets you arrange \texttt{ggplot} objects into
+multi-panel figures. The syntax is intuitive: \texttt{+} puts plots side
+by side, \texttt{/} stacks them vertically, and \texttt{plot\_layout()}
+controls the arrangement.
+
+First, save two plots as objects.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{men\_plot }\OtherTok{\textless{}{-}}\NormalTok{ dat\_long }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(demographic }\SpecialCharTok{==} \StringTok{"men"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(start\_port, proportion, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \StringTok{"Proportion men"}\NormalTok{)}
+
+\NormalTok{children\_plot }\OtherTok{\textless{}{-}}\NormalTok{ dat\_long }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(demographic }\SpecialCharTok{==} \StringTok{"children"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(start\_port, proportion, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \StringTok{"Proportion children"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Then combine them.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{men\_plot }\SpecialCharTok{+}\NormalTok{ children\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{05-reshaping_files/figure-pdf/fig-patchwork-side-1.pdf}
+
+}
+
+\caption{\label{fig-patchwork-side}Two boxplots side by side with
+patchwork.}
+
+\end{figure}%
+
+Stacked vertically.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{men\_plot }\SpecialCharTok{/}\NormalTok{ children\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{05-reshaping_files/figure-pdf/fig-patchwork-stack-1.pdf}
+
+}
+
+\caption{\label{fig-patchwork-stack}The same two boxplots stacked
+vertically.}
+
+\end{figure}%
+
+\texttt{plot\_annotation()} adds a single overall title across multiple
+panels.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(men\_plot }\SpecialCharTok{+}\NormalTok{ children\_plot) }\SpecialCharTok{+}
+  \FunctionTok{plot\_annotation}\NormalTok{(}\AttributeTok{title =} \StringTok{"Demographic composition by port of origin"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+\centering{
+
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{05-reshaping_files/figure-pdf/fig-patchwork-annotated-1.pdf}
+
+}
+
+\caption{\label{fig-patchwork-annotated}Combined figure with a shared
+title.}
+
+\end{figure}%
+
+See the \href{https://patchwork.data-imaginist.com/}{\texttt{patchwork}
+documentation} for more elaborate layouts, shared legends and
+\texttt{tag\_levels} for automatic panel labels (A, B, C).
+
+\section{Activities}\label{activities-3}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity 1}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Build a third plot showing the proportion of women by port, and combine
+all three plots (\texttt{men\_plot}, \texttt{women\_plot},
+\texttt{children\_plot}) in a single row.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Solution}, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{women\_plot }\OtherTok{\textless{}{-}}\NormalTok{ dat\_long }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(demographic }\SpecialCharTok{==} \StringTok{"women"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(start\_port, proportion, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_d}\NormalTok{(}\AttributeTok{option =} \StringTok{"E"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \StringTok{"Proportion women"}\NormalTok{)}
+
+\NormalTok{men\_plot }\SpecialCharTok{+}\NormalTok{ women\_plot }\SpecialCharTok{+}\NormalTok{ children\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Activity 2}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Reshape the data back into wide format using \texttt{pivot\_wider()}.
+(Hint: it takes \texttt{names\_from} and \texttt{values\_from}
+arguments.)
+
+\end{tcolorbox}
+
+\bookmarksetup{startatroot}
+
+\chapter{Saving and sharing plots}\label{sec-saving}
+
+\section{Intended learning outcomes}\label{intended-learning-outcomes-6}
+
+By the end of this chapter you will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Save a plot to a file with \texttt{ggsave()}
+\item
+  Choose appropriate dimensions and resolution for print or web
+\item
+  Write alt text for screen-reader accessibility
+\item
+  Find further resources to extend your skills
+\end{itemize}
+
+\section{Functions used}\label{functions-used-5}
+
+\begin{itemize}
+\tightlist
+\item
+  ggplot2: \texttt{ggsave()}
+\item
+  Chunk options: \texttt{\#\textbar{}\ fig-cap:},
+  \texttt{\#\textbar{}\ fig-alt:}, \texttt{\#\textbar{}\ fig-width:},
+  \texttt{\#\textbar{}\ fig-height:}
+\end{itemize}
+
+\section{\texorpdfstring{\texttt{ggsave()}
+basics}{ggsave() basics}}\label{ggsave-basics}
+
+\texttt{ggsave()} saves the most recently produced plot to a file, with
+the format inferred from the file extension. Supported formats include
+\texttt{.png}, \texttt{.jpeg}, \texttt{.pdf}, \texttt{.svg},
+\texttt{.tiff}, \texttt{.bmp}, \texttt{.eps} and \texttt{.wmf}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"last\_plot.png"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+To save a specific plot rather than the last one drawn, pass it as the
+\texttt{plot} argument.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_plot }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ start\_port, }\AttributeTok{fill =}\NormalTok{ start\_port)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{)}
+
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"my\_plot.png"}\NormalTok{, }\AttributeTok{plot =}\NormalTok{ my\_plot)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Controlling size and
+resolution}\label{controlling-size-and-resolution}
+
+By default \texttt{ggsave()} uses the dimensions of the active graphics
+device, which usually means whatever your RStudio plot pane happens to
+be. For consistent output, set \texttt{width}, \texttt{height} and
+\texttt{units} explicitly.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{"my\_plot.png"}\NormalTok{,}
+       \AttributeTok{plot =}\NormalTok{ my\_plot,}
+       \AttributeTok{width  =} \DecValTok{16}\NormalTok{,}
+       \AttributeTok{height =} \DecValTok{10}\NormalTok{,}
+       \AttributeTok{units  =} \StringTok{"cm"}\NormalTok{,}
+       \AttributeTok{dpi    =} \DecValTok{300}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+\begin{itemize}
+\tightlist
+\item
+  For posters and prints, use centimetres or inches and a high
+  \texttt{dpi} (300+).
+\item
+  For web display, use pixels (\texttt{units\ =\ "px"}) and
+  \texttt{dpi\ =\ 72} to \texttt{96}.
+\item
+  For papers, journals typically want a vector format such as
+  \texttt{.pdf} or \texttt{.svg} so the figure scales without
+  pixelation. Check the journal's submission guide.
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Accessibility: alt text}\label{accessibility-alt-text}
+
+A plot that is meaningful to a sighted reader is invisible to a screen
+reader unless you add alt text. In Quarto, \texttt{fig-alt} is a chunk
+option that becomes the \texttt{alt} attribute on the rendered image.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\InformationTok{\textasciigrave{}\textasciigrave{}\textasciigrave{}\{r\}}
+\CommentTok{\#| label: fig{-}mortality}
+\CommentTok{\#| fig{-}cap: "Mortality rate by port of origin."}
+\CommentTok{\#| fig{-}alt: "Boxplots of mortality rate per voyage for Liverpool, London and Bristol. All three medians lie between 0.1 and 0.2, with outliers approaching 1.0."}
+
+\FunctionTok{ggplot}\NormalTok{(dat\_filter, }\FunctionTok{aes}\NormalTok{(start\_port, mortality)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}
+\InformationTok{\textasciigrave{}\textasciigrave{}\textasciigrave{}}
+\end{Highlighting}
+\end{Shaded}
+
+A useful alt text describes the data first (what is on each axis, what
+the broad pattern is) and the decoration second (colours, themes). It is
+for someone who cannot see the image, not someone who is choosing
+whether to look at it.
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-warning-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Warning}, coltitle=black, colbacktitle=quarto-callout-warning-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+Setting \texttt{caption\ =} inside \texttt{labs()} puts text inside the
+rendered plot, where a screen reader cannot reach it. Use the
+\texttt{fig-cap} chunk option instead, which lives in the surrounding
+HTML and is read aloud.
+
+\end{tcolorbox}
+
+\section{Where to go next}\label{where-to-go-next}
+
+\begin{itemize}
+\tightlist
+\item
+  Chapter~\ref{sec-getting-started} covered the basics. For a deeper
+  treatment of the same material, see
+  \href{https://psyteachr.github.io/introdataviz/}{Data Visualisation
+  Using R, for Researchers Who Don't Use R} (Nordmann et al., 2022).
+\item
+  For a broader course covering Quarto, data wrangling, joins and
+  reproducible reports, see
+  \href{https://psyteachr.github.io/ads-v3/}{Applied Data Skills}
+  (Nordmann \& DeBruine, 2025).
+\item
+  For a reference card of \texttt{ggplot2} functions, the
+  \href{https://rstudio.github.io/cheatsheets/html/data-visualization.html}{official
+  cheat sheet} is excellent.
+\item
+  The \href{https://r-graph-gallery.com/}{R Graph Gallery} is a
+  searchable collection of every chart type imaginable, with the code to
+  produce each one.
+\item
+  For statistical concepts and worked examples, see
+  \href{https://r4ds.hadley.nz/}{R for Data Science} (Wickham et al.,
+  2023), which is freely available online.
+\end{itemize}
+
+\section{A closing note}\label{a-closing-note}
+
+This tutorial is built around a dataset documenting an atrocity. The
+plots you have produced quantify the scale and mortality of the
+trans-Atlantic trade in enslaved people, and the prominence of British
+ports in it. Plots are not neutral, however carefully you draw them.
+Choices about axes, colours, what to aggregate and what to leave
+granular all shape the story a figure tells. Bringing those choices into
+conscious view is part of what makes data visualisation a worthwhile
+skill.
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{part}{Appendices}
+\appendix
+
+\chapter{Installing R and RStudio}\label{sec-installing-r}
+
+This tutorial assumes you already have R, RStudio and the
+\texttt{tidyverse} installed. If you are starting from scratch, the most
+up-to-date instructions are in chapter 1 of \emph{Applied Data Skills}:
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://psyteachr.github.io/ads-v3/01-intro.html\#sec-install-r}{Installing
+  R and RStudio}
+\item
+  \href{https://psyteachr.github.io/ads-v3/01-intro.html\#sec-install-package}{Installing
+  packages}
+\item
+  \href{https://psyteachr.github.io/ads-v3/01-intro.html\#sec-rproj}{Setting
+  up a project}
+\end{itemize}
+
+In short:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Install R from \url{https://cran.r-project.org/} (choose the version
+  for your operating system).
+\item
+  Install RStudio Desktop from
+  \url{https://posit.co/download/rstudio-desktop/}. RStudio is a
+  development environment for R; it is free for individual use.
+\item
+  Install Quarto from \url{https://quarto.org/docs/get-started/}. Quarto
+  is what renders this book and what you will use to produce reports of
+  your own.
+\item
+  In RStudio, run
+  \texttt{install.packages(c("tidyverse",\ "patchwork"))} in the
+  console. This installs the packages used throughout this tutorial.
+\end{enumerate}
+
+You only need to install each package once per machine. You then load it
+with \texttt{library()} at the top of each new session, as we do in
+Chapter~\ref{sec-getting-started}.
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-tip-color-frame, breakable, left=2mm, leftrule=.75mm, toptitle=1mm, rightrule=.15mm, opacitybacktitle=0.6, arc=.35mm, colback=white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Tip}, coltitle=black, colbacktitle=quarto-callout-tip-color!10!white, toprule=.15mm, bottomtitle=1mm, opacityback=0, titlerule=0mm, bottomrule=.15mm]
+
+If you cannot install R locally, \href{https://posit.cloud/}{Posit
+Cloud} gives you a free RStudio environment in the browser with no
+installation required. It is sufficient for working through this
+tutorial.
+
+\end{tcolorbox}
+
+\chapter{Glossary}\label{sec-glossary}
+
+\begin{verbatim}
+data frame with 0 columns and 0 rows
+\end{verbatim}
+
+\chapter{Further resources}\label{sec-resources}
+
+\section{Companion tutorials}\label{companion-tutorials}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://psyteachr.github.io/introdataviz/}{Data Visualisation
+  Using R, for Researchers Who Don't Use R}. Nordmann, McAleer, Toivo,
+  Paterson \& DeBruine (2022). The published article that accompanies
+  this is at \url{https://doi.org/10.1177/25152459221074654}.
+\item
+  \href{https://psyteachr.github.io/ads-v3/}{Applied Data Skills}.
+  Nordmann \& DeBruine (2025). A 10-week course covering Quarto reports,
+  data visualisation, summaries, joins, tidying and wrangling.
+\end{itemize}
+
+\section{Reference}\label{reference}
+
+\begin{itemize}
+\tightlist
+\item
+  The
+  \href{https://rstudio.github.io/cheatsheets/html/data-visualization.html}{ggplot2
+  cheat sheet} is the single most useful one-page summary.
+\item
+  The \href{https://ggplot2.tidyverse.org/reference/index.html}{ggplot2
+  reference site} has the canonical documentation for every function
+  with worked examples.
+\item
+  The
+  \href{https://rstudio.github.io/cheatsheets/html/data-transformation.html}{dplyr
+  cheat sheet} and
+  \href{https://rstudio.github.io/cheatsheets/html/data-import.html}{tidyr
+  cheat sheet} cover wrangling and reshaping.
+\item
+  The \href{https://r-graph-gallery.com/}{R Graph Gallery} is a
+  searchable collection of nearly every chart type, with code.
+\end{itemize}
+
+\section{Books}\label{books}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://r4ds.hadley.nz/}{R for Data Science} (Wickham,
+  Çetinkaya-Rundel \& Grolemund). Free online. The standard introduction
+  to \texttt{tidyverse} for data analysis.
+\item
+  \href{https://ggplot2-book.org/}{ggplot2: Elegant Graphics for Data
+  Analysis} (Wickham et al.). Free online. The definitive
+  \texttt{ggplot2} book.
+\item
+  \href{https://clauswilke.com/dataviz/}{Fundamentals of Data
+  Visualization} (Wilke). Free online. Principles rather than code;
+  pairs well with the others.
+\end{itemize}
+
+\section{Quarto}\label{quarto}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://quarto.org/}{Quarto.org} is the home of the format used
+  by this book.
+\item
+  The \href{https://quarto.org/docs/books/}{Quarto guide for books}
+  covers building multi-chapter projects like this one.
+\item
+  \href{https://psyteachr.github.io/ads-v3/02-reports.html}{\texttt{ads-v3}
+  chapter 2} is a gentle introduction to writing Quarto reports.
+\end{itemize}
+
+\section{Data sources}\label{data-sources}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.slavevoyages.org/}{Slave Voyages}. The
+  Trans-Atlantic and Intra-American Slave Trade Databases. Includes
+  documentation, maps and an estimates interface.
+\end{itemize}
+
+\chapter*{References}\label{references}
+\addcontentsline{toc}{chapter}{References}
+
+\markboth{References}{References}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-nordmann2025ads}
+Nordmann, E., \& DeBruine, L. M. (2025). \emph{Applied data skills}.
+\url{https://psyteachr.github.io/ads-v3/}
+
+\bibitem[\citeproctext]{ref-nordmann2022}
+Nordmann, E., McAleer, P., Toivo, W., Paterson, H., \& DeBruine, L. M.
+(2022). Data visualization using {R} for researchers who do not use {R}.
+\emph{Advances in Methods and Practices in Psychological Science},
+\emph{5}(2). \url{https://doi.org/10.1177/25152459221074654}
+
+\bibitem[\citeproctext]{ref-wickham2023r4ds}
+Wickham, H., Çetinkaya-Rundel, M., \& Grolemund, G. (2023). \emph{{R}
+for data science} (2nd ed.). O'Reilly Media.
+\url{https://r4ds.hadley.nz/}
+
+\end{CSLReferences}
+
+
+\backmatter
+
+
+\end{document}

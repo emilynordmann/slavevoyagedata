@@ -1,0 +1,15 @@
+{
+  "hash": "234711b78ce80121ade4df423760fe4c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Glossary {#sec-glossary}\n\n\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n<div class=\"kable-table\">\n\n\n</div>\n:::\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

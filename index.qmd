@@ -14,7 +14,7 @@ The dataset used throughout is a subset of the [Trans-Atlantic Slave Trade Datab
 By the end of this book you will be able to:
 
 * Load tabular data into R with `read_csv()` and inspect it
-* Clean variable names and types using `rename()`, `factor()` and `mutate()`
+* Clean variable names and types using `clean_names()`, `rename()`, `factor()` and `mutate()`
 * Build plots in layers using the `ggplot2` grammar of graphics
 * Choose an appropriate plot type for the data at hand
 * Customise axes, scales, themes and colours
@@ -28,9 +28,7 @@ If you use this tutorial in teaching or in your own writing, please cite it as:
 
 Nordmann, E. (2026). *Intro to Data Visualisation Using R and the Slave Voyages dataset.* <https://github.com/emilynordmann/slavevoyagedata>
 
-If you want a fuller treatment of data visualisation aimed at researchers, see the published article that accompanies the introdataviz tutorial:
-
-Nordmann, E., McAleer, P., Toivo, W., Paterson, H., & DeBruine, L. (2022). Data visualisation using R, for researchers who don't use R. *Advances in Methods and Practices in Psychological Science*, 5(2). <https://doi.org/10.1177/25152459221074654>
+If you want a fuller treatment of data visualisation aimed at researchers, see @nordmann2022, the published article that accompanies the introdataviz tutorial.
 
 ## Acknowledgement
 

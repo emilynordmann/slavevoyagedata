@@ -4,29 +4,9 @@
 source("R/booktem_setup.R")
 source("R/my_setup.R")
 library(tidyverse)
+library(janitor)
 library(patchwork)
-dat_final <- read_csv("data.csv", show_col_types = FALSE) |>
-  rename(id = `Voyage ID`,
-         vessel = `Vessel name`,
-         start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,
-         purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,
-         total_embarked = `Total embarked`,
-         total_disembarked = `Total disembarked`,
-         arrival_year = `Year of arrival at port of disembarkation`,
-         men = `Percent men`,
-         women = `Percent women`,
-         children = `Percent children`,
-         died = `Slaves died during middle passage`,
-         mortality = `Mortality rate`,
-         outcome = `Slaves outcome label`) |>
-  mutate(across(c(id, vessel, purchase_place, outcome), as.factor),
-         start_port = factor(start_port,
-                             levels = c("Liverpool", "London", "Bristol",
-                                        sort(setdiff(unique(start_port),
-                                                     c("Liverpool", "London", "Bristol"))))))
-
-dat_filter <- dat_final |>
-  filter(start_port %in% c("Liverpool", "London", "Bristol"))
+source("R/load_data.R")
 
 port_summary <- dat_filter |>
   group_by(start_port) |>

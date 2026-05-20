@@ -1,0 +1,21 @@
+{
+  "hash": "234711b78ce80121ade4df423760fe4c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Glossary {#sec-glossary}\n\n\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output .cell-output-stdout}\n\n```\ndata frame with 0 columns and 0 rows\n```\n\n\n:::\n:::\n\n",
+    "supporting": [
+      "app-glossary_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}
