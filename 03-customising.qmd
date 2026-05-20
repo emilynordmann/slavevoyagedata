@@ -1,0 +1,218 @@
+# Customising plots {#sec-customising}
+
+```{r setup-customising, include=FALSE}
+source("R/booktem_setup.R")
+source("R/my_setup.R")
+library(tidyverse)
+library(patchwork)
+dat_final <- read_csv("data.csv", show_col_types = FALSE) |>
+  rename(id = `Voyage ID`,
+         vessel = `Vessel name`,
+         start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,
+         purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,
+         total_embarked = `Total embarked`,
+         total_disembarked = `Total disembarked`,
+         arrival_year = `Year of arrival at port of disembarkation`,
+         men = `Percent men`,
+         women = `Percent women`,
+         children = `Percent children`,
+         died = `Slaves died during middle passage`,
+         mortality = `Mortality rate`,
+         outcome = `Slaves outcome label`) |>
+  mutate(across(c(id, vessel, purchase_place, outcome), as.factor),
+         start_port = factor(start_port,
+                             levels = c("Liverpool", "London", "Bristol",
+                                        sort(setdiff(unique(start_port),
+                                                     c("Liverpool", "London", "Bristol"))))))
+
+dat_filter <- dat_final |>
+  filter(start_port %in% c("Liverpool", "London", "Bristol"))
+
+port_summary <- dat_filter |>
+  group_by(start_port) |>
+  summarise(embarked = sum(total_embarked, na.rm = TRUE),
+            .groups = "drop")
+```
+
+## Intended learning outcomes
+
+By the end of this chapter you will be able to:
+
+* Use `scale_*` functions to control axis labels, breaks and limits
+* Distinguish `coord_cartesian()` from `scale_*` limits
+* Apply built-in themes and set a global default with `theme_set()`
+* Add titles, subtitles and captions with `labs()`
+* Use the colour-blind-friendly `viridis` palettes
+
+## Functions used
+
+* ggplot2: `scale_x_discrete()`, `scale_x_continuous()`, `scale_y_continuous()`, `coord_cartesian()`, `scale_fill_viridis_d()`, `scale_colour_viridis_d()`, `labs()`, `theme_minimal()`, `theme_bw()`, `theme_classic()`, `theme_set()`
+* scales: `label_comma()` (replacement for `scales::comma`)
+
+## Scientific notation and number formatting
+
+The column chart from @sec-basic-plots uses scientific notation on the y-axis because the numbers are so large.
+
+```{r}
+#| label: fig-col-scientific
+#| fig-cap: "Total embarked, with the default y-axis in scientific notation."
+#| fig-alt: "Column chart with Liverpool, London and Bristol on the x-axis and total embarked on the y-axis labelled in scientific notation (5e+05, 1e+06)."
+ggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_viridis_d(option = "E")
+```
+
+We can override that with `scale_y_continuous()` and a label-formatting function from the `scales` package.
+
+```{r}
+#| label: fig-col-comma
+#| fig-cap: "Total embarked, with the y-axis formatted with thousands separators."
+#| fig-alt: "Column chart with Liverpool, London and Bristol on the x-axis and total embarked on the y-axis labelled 0, 500,000, 1,000,000."
+ggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_viridis_d(option = "E") +
+  scale_y_continuous(labels = scales::label_comma())
+```
+
+::: {.callout-note}
+`scales::label_comma()` is the modern factory function. The older `scales::comma` (no parentheses) still works but is being phased out.
+:::
+
+## Axis labels and titles
+
+`labs()` is the most concise way to set axis labels, the plot title, subtitle and caption.
+
+```{r}
+#| label: fig-col-labs
+#| fig-cap: "Adding axis labels and a title."
+#| fig-alt: "Column chart of total embarked by port with axis label 'Port of origin', y-axis label 'Number embarked', and title 'Number embarked on ships originating in British ports'."
+ggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_viridis_d(option = "E") +
+  scale_y_continuous(labels = scales::label_comma()) +
+  labs(x = "Port of origin",
+       y = "Number embarked",
+       title = "Number embarked on ships originating in British ports")
+```
+
+## Themes
+
+`ggplot2` has several built-in themes. We have already set `theme_minimal()` as the global default in the project setup (see `R/my_setup.R`). You can override it for an individual plot by adding a different theme as a layer.
+
+```{r}
+#| label: fig-themes
+#| fig-cap: "The same plot in three different themes."
+#| fig-alt: "Three column charts of total embarked by port, each with a different theme applied: theme_minimal, theme_bw and theme_classic."
+p <- ggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_viridis_d(option = "E") +
+  scale_y_continuous(labels = scales::label_comma()) +
+  labs(x = NULL, y = NULL)
+
+(p + theme_minimal() + ggtitle("theme_minimal")) +
+  (p + theme_bw() + ggtitle("theme_bw")) +
+  (p + theme_classic() + ggtitle("theme_classic"))
+```
+
+::: {.callout-tip}
+Type `theme_` in the RStudio source pane and let auto-complete show you the available options. To set a theme for every subsequent plot in your script, run `theme_set(theme_bw())` near the top.
+:::
+
+## Discrete x-axis labels
+
+`scale_x_discrete()` lets you control the tick labels on a categorical axis without renaming the underlying data.
+
+```{r}
+#| label: fig-discrete-labels
+#| fig-cap: "Renaming x-axis ticks with scale_x_discrete()."
+#| fig-alt: "Column chart with x-axis ticks renamed to 'Liverpool', 'Port of London' and 'Bristol'."
+ggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +
+  geom_col(show.legend = FALSE) +
+  scale_x_discrete(labels = c("Liverpool", "Port of London", "Bristol")) +
+  scale_fill_viridis_d(option = "E") +
+  scale_y_continuous(labels = scales::label_comma())
+```
+
+## Axis limits the right way
+
+There are two ways to restrict the visible range of an axis, and they behave differently.
+
+`coord_cartesian(xlim = c(...), ylim = c(...))` zooms in on the plot. Data outside the range are still used in calculations (such as drawing a smoother) and are simply cropped from view.
+
+`scale_x_continuous(limits = c(...))` filters the data. Any rows outside the range are dropped before geoms or smoothers see them. This can silently change a regression line, so it is usually the wrong choice.
+
+```{r}
+#| label: fig-axis-limits
+#| fig-cap: "coord_cartesian (left) crops the view; scale limits (right) filter the data."
+#| fig-alt: "Two scatter plots side by side. Both show arrival year vs total embarked with a smoother. The left plot crops the x-axis to 1700-1815 but the smoother uses all the data. The right plot filters to the same range and the smoother changes shape accordingly."
+#| warning: false
+#| message: false
+crop <- ggplot(dat_filter, aes(arrival_year, total_embarked)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  coord_cartesian(xlim = c(1700, 1815)) +
+  labs(title = "coord_cartesian (crop)")
+
+filt <- ggplot(dat_filter, aes(arrival_year, total_embarked)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  scale_x_continuous(limits = c(1700, 1815)) +
+  labs(title = "scale_x_continuous(limits=)")
+
+crop + filt
+```
+
+## Viridis colour palettes
+
+The default `ggplot2` colours are not colour-blind friendly. The `viridis` family of palettes is and is now included in `ggplot2`. Use `scale_fill_viridis_d()` for discrete fill (a category mapped to fill), and `scale_fill_viridis_c()` for continuous fill (a number mapped to fill); equivalents exist for `colour`.
+
+The `option` argument picks one of five palettes:
+
+* `"A"` magma
+* `"B"` inferno
+* `"C"` plasma
+* `"D"` viridis (the default)
+* `"E"` cividis (the most accessible)
+
+```{r}
+#| label: fig-viridis-options
+#| fig-cap: "Five viridis palettes applied to the same column chart."
+#| fig-alt: "Five column charts of the same data with different viridis colour options (A magma, B inferno, C plasma, D viridis, E cividis). Each uses a different colour gradient from dark to light."
+make_plot <- function(opt) {
+  ggplot(port_summary, aes(start_port, embarked, fill = start_port)) +
+    geom_col(show.legend = FALSE) +
+    scale_fill_viridis_d(option = opt) +
+    labs(title = paste("option =", opt), x = NULL, y = NULL)
+}
+
+make_plot("A") + make_plot("B") + make_plot("C") +
+  make_plot("D") + make_plot("E") +
+  plot_layout(nrow = 2)
+```
+
+## Activities
+
+::: {.callout-tip}
+## Activity 1
+
+Apply the `theme_classic()` theme to the column chart of port totals and edit the y-axis label to "Total embarked (people)".
+:::
+
+::: {.callout-note collapse="true"}
+## Solution
+
+```{r eval = FALSE}
+ggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_viridis_d(option = "E") +
+  scale_y_continuous(labels = scales::label_comma()) +
+  labs(x = "Port of origin", y = "Total embarked (people)") +
+  theme_classic()
+```
+:::
+
+::: {.callout-tip}
+## Activity 2
+
+Replace `scale_x_continuous(limits = c(1700, 1815))` in the right-hand panel above with `coord_cartesian(xlim = c(1700, 1815))`. Confirm that the smoother shape is the same as the left panel.
+:::

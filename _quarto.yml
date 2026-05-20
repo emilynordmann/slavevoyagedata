@@ -1,0 +1,85 @@
+lang: en
+# language: include/_language.yml
+
+project:
+  type: book
+  output-dir: docs
+
+execute:
+  freeze: auto # re-render only changed chapters
+
+book:
+  title: "Intro to Data Visualisation Using R and the Slave Voyages dataset"
+  subtitle: ""
+  author: "Emily Nordmann"
+  doi: ""
+  license: CC-BY-SA 4.0
+  description: "A beginner's guide to ggplot2 and data visualisation, using the Trans-Atlantic Slave Trade Database."
+  cover-image: images/logos/logo.png
+  image: images/logos/logo.png
+  favicon: images/logos/logo.png
+  cookie-consent: false
+  google-analytics: ""
+  page-navigation: true
+  search: true
+  downloads: []
+  sharing: []
+  sidebar:
+    search: true
+    style: floating
+    background: light
+    foreground: dark
+    border: true
+    alignment: left
+    collapse-level: 3
+    pinned: true
+  page-footer: "CC-BY-SA 4.0 Emily Nordmann"
+  repo-url: https://github.com/emilynordmann/slavevoyagedata
+  repo-actions: [edit, issue]
+  chapters:
+    - index.qmd
+    - 01-getting-started.qmd
+    - 02-basic-plots.qmd
+    - 03-customising.qmd
+    - 04-grouped-plots.qmd
+    - 05-reshaping.qmd
+    - 06-saving-sharing.qmd
+  appendices:
+    - app-installing-r.qmd
+    - app-glossary.qmd
+    - app-resources.qmd
+    - references.qmd
+
+bibliography: include/references.bib
+csl: include/apa.csl
+
+format:
+  html:
+    theme:
+      light:
+        - flatly
+        - include/light.scss
+      dark:
+        - darkly
+        - include/dark.scss
+    css:
+      - https://use.fontawesome.com/releases/v5.13.0/css/all.css
+      - include/booktem.css
+      - include/webex.css
+      - include/glossary.css
+      - include/style.css
+    df-print: kable
+    code-link: true
+    code-fold: false
+    code-line-numbers: true
+    code-overflow: wrap
+    code-copy: hover
+    highlight-style: a11y
+    include-after-body:
+      - include/webex.js
+      - include/script.js
+      - include/footer.html
+  pdf:
+    documentclass: book
+    include-in-header: include/preamble.tex
+    pdf-engine: xelatex

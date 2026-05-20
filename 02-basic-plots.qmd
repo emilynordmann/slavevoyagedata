@@ -1,0 +1,284 @@
+# Basic plots {#sec-basic-plots}
+
+```{r setup-basic-plots, include=FALSE}
+source("R/booktem_setup.R")
+source("R/my_setup.R")
+library(tidyverse)
+library(patchwork)
+dat_final <- read_csv("data.csv", show_col_types = FALSE) |>
+  rename(id = `Voyage ID`,
+         vessel = `Vessel name`,
+         start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,
+         purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,
+         total_embarked = `Total embarked`,
+         total_disembarked = `Total disembarked`,
+         arrival_year = `Year of arrival at port of disembarkation`,
+         men = `Percent men`,
+         women = `Percent women`,
+         children = `Percent children`,
+         died = `Slaves died during middle passage`,
+         mortality = `Mortality rate`,
+         outcome = `Slaves outcome label`) |>
+  mutate(across(c(id, vessel, purchase_place, outcome), as.factor),
+         start_port = factor(start_port,
+                             levels = c("Liverpool", "London", "Bristol",
+                                        sort(setdiff(unique(start_port),
+                                                     c("Liverpool", "London", "Bristol"))))))
+```
+
+## Intended learning outcomes
+
+By the end of this chapter you will be able to:
+
+* Explain what is meant by a "grammar of graphics" and a "layer" in `ggplot2`
+* Build a scatterplot using `geom_point()`
+* Add a line of best fit using `geom_smooth()`
+* Plot the distribution of a single continuous variable with `geom_histogram()`
+* Plot counts with `geom_bar()` and pre-computed values with `geom_col()`
+* Plot grouped distributions with `geom_boxplot()` and `geom_violin()`
+
+## Functions used
+
+* ggplot2: `ggplot()`, `aes()`, `geom_point()`, `geom_smooth()`, `geom_histogram()`, `geom_bar()`, `geom_col()`, `geom_boxplot()`, `geom_violin()`
+* dplyr: `filter()`, `group_by()`, `count()`, `arrange()`, `summarise()`
+
+## The grammar of graphics
+
+`ggplot2` is so powerful because it builds plots in `r glossary("layer", "layers")`. The first layer is always the base of the plot, set up with `ggplot()`, which specifies the data and the `r glossary("aesthetic", "aesthetic")` mappings (which variables go on which axis, or are mapped to colour or shape). Subsequent layers add `r glossary("geom", "geoms")` (geometric objects such as points, bars, or boxes), scales, themes and so on. Layers are added with `+`.
+
+It is helpful to think of any plot as having several elements that sit semi-transparently on top of each other. A scatterplot with a line of best fit, for example, is the base layer, then the points layer, then the smoother layer.
+
+## Scatterplots
+
+A scatterplot is appropriate when both axes are continuous. The base layer below maps `arrival_year` to the x-axis and `total_embarked` to the y-axis.
+
+```{r}
+#| label: fig-scatter-base
+#| eval: false
+ggplot(data = dat_final, aes(x = arrival_year, y = total_embarked))
+```
+
+Run that line on its own. You get an empty plot with the axes drawn but no data. That is because we have not added a geom. Given the variable types, what type of plot is likely to be built on this base layer? `r mcq(c("Bar chart", answer = "Scatterplot", "Histogram"))`
+
+We add the points with `geom_point()`.
+
+```{r}
+#| label: fig-scatter-points
+#| fig-cap: "Number embarked on each voyage, plotted against the year the voyage arrived in port."
+#| fig-alt: "Scatterplot of arrival year on the x-axis from about 1640 to 1815 and total embarked on the y-axis from 0 to roughly 1000. Density of points increases sharply from the mid-eighteenth century, reaching its peak between about 1750 and 1810."
+#| warning: false
+ggplot(dat_final, aes(arrival_year, total_embarked)) +
+  geom_point()
+```
+
+::: {.callout-note}
+You will see a warning saying `Removed 422 rows containing missing values or values outside the scale range`. That means 422 voyages in the data have a missing value for either `arrival_year` or `total_embarked`. `ggplot2` quietly drops them. We will return to missing data in @sec-overplotting.
+:::
+
+There are so many points that it is hard to see the trend. That is not a fault of the plot; it is a reflection of the scale of the trade.
+
+## Adding a line of best fit
+
+A `r glossary("smoother")` makes it easier to see the trend. `geom_smooth()` uses LOESS by default for samples smaller than 1000 observations and GAM otherwise. For a linear trend, set `method = "lm"`.
+
+```{r}
+#| label: fig-scatter-smooth
+#| fig-cap: "Scatterplot with two smoothers, LOESS (left) and linear (right)."
+#| fig-alt: "Two scatterplots side by side. Both have arrival year on the x-axis and total embarked on the y-axis. The left plot has a curved LOESS smoother; the right plot has a straight linear smoother. Both indicate that the number embarked per voyage rises across the eighteenth century."
+#| warning: false
+#| message: false
+loess_plot <- ggplot(dat_final, aes(arrival_year, total_embarked)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth()
+
+linear_plot <- ggplot(dat_final, aes(arrival_year, total_embarked)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", formula = y ~ x)
+
+loess_plot + linear_plot
+```
+
+The combination of `loess_plot + linear_plot` is from the `patchwork` package, which we cover properly in @sec-patchwork.
+
+## Layer order matters
+
+If you add `geom_smooth()` first and `geom_point()` second, the points are drawn on top of the smoother.
+
+```{r}
+#| label: fig-scatter-wrong-order
+#| fig-cap: "Layers in the wrong order: points drawn on top of the smoother."
+#| fig-alt: "Scatterplot with a LOESS smoother and overlaid points. The smoother is barely visible because the points are drawn on top of it."
+#| warning: false
+#| message: false
+ggplot(dat_final, aes(arrival_year, total_embarked)) +
+  geom_smooth() +
+  geom_point()
+```
+
+## Histograms
+
+A `r glossary("histogram")` shows the distribution of a single continuous variable. The x-axis is divided into bins and the y-axis shows how many observations fall into each bin.
+
+```{r}
+#| label: fig-histogram-default
+#| fig-cap: "Default histogram of total embarked per voyage."
+#| fig-alt: "Histogram with total embarked on the x-axis and count on the y-axis. The distribution is right-skewed with a peak near 250 and a long tail extending past 700."
+#| warning: false
+ggplot(dat_final, aes(x = total_embarked)) +
+  geom_histogram()
+```
+
+The default uses 30 bins and you will see the message `stat_bin() using bins = 30. Pick better value with binwidth`. It is good practice to set `binwidth` (the size of each bin) explicitly, along with `boundary = 0` so the bins start at sensible round numbers.
+
+```{r}
+#| label: fig-histogram-binwidth
+#| fig-cap: "Histogram with explicit binwidth of 50 starting at 0."
+#| fig-alt: "Histogram with total embarked on the x-axis and count on the y-axis. Bins are 50 units wide, starting at 0. The distribution peaks between 200 and 300 embarked."
+#| warning: false
+ggplot(dat_final, aes(x = total_embarked)) +
+  geom_histogram(binwidth = 50, boundary = 0,
+                 fill = "white", colour = "black")
+```
+
+`fill` sets the inside colour of each bar; `colour` sets the outline.
+
+## Bar charts of counts
+
+`geom_bar()` counts the number of observations in each level of its x-aesthetic. You do not specify a y-axis because the y-axis is always a count.
+
+If we try to plot `start_port` directly, the result is unusable.
+
+```{r eval = FALSE}
+ggplot(dat_final, aes(x = start_port)) +
+  geom_bar()
+```
+
+There are too many ports to fit on one axis. We can confirm this with a quick count.
+
+```{r}
+port_counts <- dat_final |>
+  group_by(start_port) |>
+  count() |>
+  arrange(desc(n))
+
+port_counts
+```
+
+Liverpool, London and Bristol dominate. We will filter to those three for the next several plots.
+
+```{r}
+dat_filter <- dat_final |>
+  filter(start_port %in% c("Liverpool", "London", "Bristol"))
+```
+
+The `%in%` operator reads as "is one of". `dat_filter` keeps only the rows where `start_port` matches one of the three values.
+
+```{r}
+#| label: fig-bar-ports
+#| fig-cap: "Number of voyages originating in each of the three main British ports."
+#| fig-alt: "Bar chart with Liverpool, London and Bristol on the x-axis and count on the y-axis. Liverpool has by far the most voyages, around 4500. London and Bristol each have around 1500."
+ggplot(dat_filter, aes(x = start_port, fill = start_port)) +
+  geom_bar(show.legend = FALSE)
+```
+
+::: {.callout-warning}
+This bar chart shows the number of *voyages*, not the number of people. Each Liverpool voyage trafficked, on average, hundreds of people, so the human cost is far larger than the bar heights suggest. We will plot the human totals shortly.
+:::
+
+## Bar charts of pre-computed values (`geom_col()`)
+
+When you already have the y-values (because you computed them yourself), use `geom_col()` instead of `geom_bar()`. The default statistic for `geom_col()` is `"identity"`: it uses the numbers you supplied as-is.
+
+```{r}
+port_summary <- dat_filter |>
+  group_by(start_port) |>
+  summarise(embarked = sum(total_embarked, na.rm = TRUE),
+            .groups = "drop")
+
+port_summary
+```
+
+* `na.rm = TRUE` tells `sum()` to ignore missing values when computing the total. Without it, any single missing value would produce `NA` for the whole group.
+* `.groups = "drop"` removes the grouping after summarising, which is the modern `dplyr` recommendation; without it you get a "regrouping" message.
+
+* How many enslaved people embarked on ships originating in Liverpool? `r mcq(c("~832 thousand", answer = "~1.3 million", "56 thousand"))`
+
+```{r}
+#| label: fig-col-totals
+#| fig-cap: "Total number of enslaved people embarked on ships originating in each port."
+#| fig-alt: "Column chart with Liverpool, London and Bristol on the x-axis and total embarked on the y-axis. Liverpool is around 1.3 million; London around 832 thousand; Bristol around 540 thousand."
+ggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +
+  geom_col(show.legend = FALSE)
+```
+
+## Boxplots
+
+A `r glossary("boxplot")` shows the median, interquartile range and outliers of a continuous variable, optionally broken down by a categorical variable on the x-axis.
+
+```{r}
+#| label: fig-boxplot
+#| fig-cap: "Distribution of the number embarked per voyage, by port of origin."
+#| fig-alt: "Boxplots for Liverpool, London and Bristol. All three have medians just above 250 with substantial spread. Liverpool has the highest extremes, with outliers above 800."
+#| warning: false
+ggplot(dat_filter, aes(x = start_port, y = total_embarked)) +
+  geom_boxplot()
+```
+
+The median number of people embarked per voyage was just over 250, but in many cases the number was much higher, particularly for ships originating in Liverpool.
+
+## Violin-boxplots
+
+A violin plot shows the full distribution as a mirrored density. Combined with a thin boxplot inside it, the result is much more informative than a boxplot alone.
+
+```{r}
+#| label: fig-violin-boxplot
+#| fig-cap: "Violin-boxplots of the number embarked per voyage."
+#| fig-alt: "Violin plots with narrow boxplots inside them. The violins show that the distribution for each port is unimodal and right-skewed, with Liverpool having the widest spread."
+#| warning: false
+ggplot(dat_filter, aes(x = start_port, y = total_embarked)) +
+  geom_violin(trim = FALSE) +
+  geom_boxplot(width = 0.2)
+```
+
+::: {.callout-tip}
+The order of the layers matters. If you draw the boxplot first and the violin on top, the boxplot is hidden. Try changing `trim = FALSE` to `TRUE` and `width = 0.2` to `0.5` to see what each argument does.
+:::
+
+## Activities
+
+::: {.callout-tip}
+## Activity 1
+
+Modify the histogram so the binwidth is 25 instead of 50. Does the peak shift?
+:::
+
+::: {.callout-note collapse="true"}
+## Solution
+
+```{r eval = FALSE}
+ggplot(dat_final, aes(x = total_embarked)) +
+  geom_histogram(binwidth = 25, boundary = 0,
+                 fill = "white", colour = "black")
+```
+
+The peak stays in roughly the same place (200-300) but the shape is more detailed. Smaller bins reveal structure that larger bins smooth over, at the cost of more visual noise.
+:::
+
+::: {.callout-tip}
+## Activity 2
+
+Build a boxplot of `mortality` by `start_port` (still using `dat_filter`).
+:::
+
+::: {.callout-note collapse="true"}
+## Solution
+
+```{r}
+#| label: fig-mortality-boxplot
+#| fig-cap: "Mortality rate per voyage by port of origin."
+#| fig-alt: "Boxplots of mortality rate (0 to 1) for Liverpool, London and Bristol. All three have a median around 0.1 to 0.15 with outliers reaching close to 1."
+#| warning: false
+ggplot(dat_filter, aes(x = start_port, y = mortality)) +
+  geom_boxplot()
+```
+:::

@@ -1,0 +1,15 @@
+{
+  "hash": "8c6f6abe71356200c0539dbcc36cfe85",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Overview {.unnumbered}\n\n\n\n\n\nThis is a beginner's guide to `ggplot2` and data visualisation. It will assume the following things:\n\n* You have installed R and RStudio\n* You know how to install and load packages in R\n* You know the absolute basics of R, e.g., what a function is, how to run a line of code. If you'd like to recap these basics, you may find the [Programming Basics](https://psyteachr.github.io/msc-conv-odl/ref3.html) Chapter of my MSc book useful\n* You have a basic level of data visualisation comprehension, e.g., you can read various types of graphs\n* You haven't got a clue how to make these graphs in R\n\nThis tutorial was the result of a request by [David Tree](https://twitter.com/DavidTree) for anti-racism curriculum materials. The data used is from the [Slave Voyages](https://www.slavevoyages.org/) project. The Trans-Atlantic Slave Trade Database comprises 36,000 individual slaving expeditions between 1514 and 1866. This dataset is horrifying and so is the history contained within the graphs you will produce.\n\nWhere additional instruction or detail about certain basic R functions might be helpful, I will point to relevant chapters of my MSc data skills book to avoid duplication.\n\nThe code for this tutorial is available on [GitHub](https://github.com/emilynordmann/slavevoyagedata) with a Creative Commons licence. You may use it and adapt with without any further permission.\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

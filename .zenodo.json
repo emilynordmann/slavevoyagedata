@@ -1,27 +1,22 @@
 {
-    "description": "The 2019-2020 version of MY-BOOK for the Institute of Neuroscience and Psychology at the University of Glasgow.", 
-    "license": "cc-by-sa", 
-    "title": "My Book Name", 
-    "version": "1.0.0",
-    "upload_type": "software", 
-    "publication_date": "2020-01-01", 
+    "description": "A beginner's guide to ggplot2 and data visualisation in R, using the Trans-Atlantic Slave Trade Database from the Slave Voyages project.",
+    "license": "cc-by-sa",
+    "title": "Intro to Data Visualisation Using R and the Slave Voyages dataset",
+    "version": "2.0.0",
+    "upload_type": "software",
+    "publication_date": "2026-05-19",
     "creators": [
         {
-            "name": "Author1 Lastname",
-            "affiliation": "University of Author1",
-            "orcid": "0000-0000-0000-0000"
-        },
-        {
-            "name": "Author2 Lastname",
-            "affiliation": "University of Author2",
-            "orcid": "0000-0000-0000-0000"
+            "name": "Nordmann, Emily",
+            "affiliation": "University of Glasgow",
+            "orcid": "0000-0002-0806-1081"
         }
-    ], 
-    "access_right": "open", 
+    ],
+    "access_right": "open",
     "related_identifiers": [
         {
-            "scheme": "url", 
-            "identifier": "https://PsyTeachR.github.io/my-book/", 
+            "scheme": "url",
+            "identifier": "https://github.com/emilynordmann/slavevoyagedata",
             "relation": "isSupplementTo"
         }
     ]

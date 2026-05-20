@@ -1,0 +1,90 @@
+# Saving and sharing plots {#sec-saving}
+
+```{r setup-saving, include=FALSE}
+source("R/booktem_setup.R")
+source("R/my_setup.R")
+library(tidyverse)
+```
+
+## Intended learning outcomes
+
+By the end of this chapter you will be able to:
+
+* Save a plot to a file with `ggsave()`
+* Choose appropriate dimensions and resolution for print or web
+* Write alt text for screen-reader accessibility
+* Find further resources to extend your skills
+
+## Functions used
+
+* ggplot2: `ggsave()`
+* Chunk options: `#| fig-cap:`, `#| fig-alt:`, `#| fig-width:`, `#| fig-height:`
+
+## `ggsave()` basics
+
+`ggsave()` saves the most recently produced plot to a file, with the format inferred from the file extension. Supported formats include `.png`, `.jpeg`, `.pdf`, `.svg`, `.tiff`, `.bmp`, `.eps` and `.wmf`.
+
+```{r eval = FALSE}
+ggsave("last_plot.png")
+```
+
+To save a specific plot rather than the last one drawn, pass it as the `plot` argument.
+
+```{r eval = FALSE}
+my_plot <- ggplot(dat_filter, aes(x = start_port, fill = start_port)) +
+  geom_bar(show.legend = FALSE)
+
+ggsave("my_plot.png", plot = my_plot)
+```
+
+## Controlling size and resolution
+
+By default `ggsave()` uses the dimensions of the active graphics device, which usually means whatever your RStudio plot pane happens to be. For consistent output, set `width`, `height` and `units` explicitly.
+
+```{r eval = FALSE}
+ggsave("my_plot.png",
+       plot = my_plot,
+       width  = 16,
+       height = 10,
+       units  = "cm",
+       dpi    = 300)
+```
+
+::: {.callout-tip}
+* For posters and prints, use centimetres or inches and a high `dpi` (300+).
+* For web display, use pixels (`units = "px"`) and `dpi = 72` to `96`.
+* For papers, journals typically want a vector format such as `.pdf` or `.svg` so the figure scales without pixelation. Check the journal's submission guide.
+:::
+
+## Accessibility: alt text
+
+A plot that is meaningful to a sighted reader is invisible to a screen reader unless you add alt text. In Quarto, `fig-alt` is a chunk option that becomes the `alt` attribute on the rendered image.
+
+````
+```{{r}}
+#| label: fig-mortality
+#| fig-cap: "Mortality rate by port of origin."
+#| fig-alt: "Boxplots of mortality rate per voyage for Liverpool, London and Bristol. All three medians lie between 0.1 and 0.2, with outliers approaching 1.0."
+
+ggplot(dat_filter, aes(start_port, mortality)) +
+  geom_boxplot()
+```
+````
+
+A useful alt text describes the data first (what is on each axis, what the broad pattern is) and the decoration second (colours, themes). It is for someone who cannot see the image, not someone who is choosing whether to look at it.
+
+::: {.callout-warning}
+Setting `caption =` inside `labs()` puts text inside the rendered plot, where a screen reader cannot reach it. Use the `fig-cap` chunk option instead, which lives in the surrounding HTML and is read aloud.
+:::
+
+## Where to go next
+
+* @sec-getting-started covered the basics. For a deeper treatment of the same material, see [Data Visualisation Using R, for Researchers Who Don't Use R](https://psyteachr.github.io/introdataviz/) (Nordmann et al., 2022).
+* For a broader course covering Quarto, data wrangling, joins and reproducible reports, see [Applied Data Skills](https://psyteachr.github.io/ads-v3/) (Nordmann & DeBruine, 2025).
+* For a reference card of `ggplot2` functions, the [official cheat sheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html) is excellent.
+* The [R Graph Gallery](https://r-graph-gallery.com/) is a searchable collection of every chart type imaginable, with the code to produce each one.
+* For statistical concepts and worked examples, [R for Data Science](https://r4ds.hadley.nz/) by Wickham, Çetinkaya-Rundel & Grolemund is freely available online.
+
+## A closing note
+
+This tutorial is built around a dataset documenting an atrocity. The plots you have produced quantify the scale and mortality of the trans-Atlantic trade in enslaved people, and the prominence of British ports in it. Plots are not neutral, however carefully you draw them. Choices about axes, colours, what to aggregate and what to leave granular all shape the story a figure tells. Bringing those choices into conscious view is part of what makes data visualisation a worthwhile skill.

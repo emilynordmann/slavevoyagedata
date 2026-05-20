@@ -1,0 +1,29 @@
+# Further resources {#sec-resources}
+
+## Companion tutorials
+
+* [Data Visualisation Using R, for Researchers Who Don't Use R](https://psyteachr.github.io/introdataviz/). Nordmann, McAleer, Toivo, Paterson & DeBruine (2022). The published article that accompanies this is at <https://doi.org/10.1177/25152459221074654>.
+* [Applied Data Skills](https://psyteachr.github.io/ads-v3/). Nordmann & DeBruine (2025). A 10-week course covering Quarto reports, data visualisation, summaries, joins, tidying and wrangling.
+
+## Reference
+
+* The [ggplot2 cheat sheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html) is the single most useful one-page summary.
+* The [ggplot2 reference site](https://ggplot2.tidyverse.org/reference/index.html) has the canonical documentation for every function with worked examples.
+* The [dplyr cheat sheet](https://rstudio.github.io/cheatsheets/html/data-transformation.html) and [tidyr cheat sheet](https://rstudio.github.io/cheatsheets/html/data-import.html) cover wrangling and reshaping.
+* The [R Graph Gallery](https://r-graph-gallery.com/) is a searchable collection of nearly every chart type, with code.
+
+## Books
+
+* [R for Data Science](https://r4ds.hadley.nz/) (Wickham, Çetinkaya-Rundel & Grolemund). Free online. The standard introduction to `tidyverse` for data analysis.
+* [ggplot2: Elegant Graphics for Data Analysis](https://ggplot2-book.org/) (Wickham et al.). Free online. The definitive `ggplot2` book.
+* [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) (Wilke). Free online. Principles rather than code; pairs well with the others.
+
+## Quarto
+
+* [Quarto.org](https://quarto.org/) is the home of the format used by this book.
+* The [Quarto guide for books](https://quarto.org/docs/books/) covers building multi-chapter projects like this one.
+* [`ads-v3` chapter 2](https://psyteachr.github.io/ads-v3/02-reports.html) is a gentle introduction to writing Quarto reports.
+
+## Data sources
+
+* [Slave Voyages](https://www.slavevoyages.org/). The Trans-Atlantic and Intra-American Slave Trade Databases. Includes documentation, maps and an estimates interface.

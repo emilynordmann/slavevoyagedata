@@ -1,0 +1,136 @@
+# Grouped plots and overplotting {#sec-grouped-plots}
+
+```{r setup-grouped, include=FALSE}
+source("R/booktem_setup.R")
+source("R/my_setup.R")
+library(tidyverse)
+library(patchwork)
+dat_final <- read_csv("data.csv", show_col_types = FALSE) |>
+  rename(id = `Voyage ID`,
+         vessel = `Vessel name`,
+         start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,
+         purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,
+         total_embarked = `Total embarked`,
+         total_disembarked = `Total disembarked`,
+         arrival_year = `Year of arrival at port of disembarkation`,
+         men = `Percent men`,
+         women = `Percent women`,
+         children = `Percent children`,
+         died = `Slaves died during middle passage`,
+         mortality = `Mortality rate`,
+         outcome = `Slaves outcome label`) |>
+  mutate(across(c(id, vessel, purchase_place, outcome), as.factor),
+         start_port = factor(start_port,
+                             levels = c("Liverpool", "London", "Bristol",
+                                        sort(setdiff(unique(start_port),
+                                                     c("Liverpool", "London", "Bristol"))))))
+
+dat_filter <- dat_final |>
+  filter(start_port %in% c("Liverpool", "London", "Bristol"))
+```
+
+## Intended learning outcomes
+
+By the end of this chapter you will be able to:
+
+* Map a categorical variable to `colour` or `fill` to display three variables on one plot
+* Distinguish setting an aesthetic *inside* `aes()` from setting it as a fixed value *outside* `aes()`
+* Split a plot into panels with `facet_wrap()` and `facet_grid()`
+* Reduce overplotting with `alpha` and `geom_jitter()`
+
+## Functions used
+
+* ggplot2: `aes()`, `geom_point()`, `geom_jitter()`, `geom_smooth()`, `facet_wrap()`, `facet_grid()`, `coord_cartesian()`
+* `colour` and `fill` aesthetics
+
+## Adding a third variable with colour
+
+So far our plots have used at most two variables. To show how the number who died on the Middle Passage varied across the period of British involvement, we plot `arrival_year` against `died` and map `start_port` to `colour`.
+
+```{r}
+#| label: fig-grouped-scatter
+#| fig-cap: "Number of deaths per voyage by year of arrival, coloured by port of origin."
+#| fig-alt: "Scatterplot with arrival year on the x-axis and deaths per voyage on the y-axis. Points are coloured by port of origin (Liverpool, London, Bristol). Three smoothers, one per port, run across the eighteenth century."
+#| warning: false
+#| message: false
+ggplot(dat_filter, aes(arrival_year, died, colour = start_port)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth() +
+  scale_colour_viridis_d() +
+  labs(x = "Year of arrival",
+       y = "Number of deaths per voyage",
+       colour = "Port of origin") +
+  coord_cartesian(xlim = c(1641, 1815))
+```
+
+::: {.callout-tip}
+## Inside or outside `aes()`?
+
+* Inside `aes()`: the aesthetic varies with the data. `aes(colour = start_port)` means each port gets a different colour.
+* Outside `aes()`: the aesthetic is a fixed value. `geom_point(colour = "dodgerblue")` colours all points the same regardless of port.
+
+The same rule applies to `fill`, `shape`, `size` and `linetype`.
+:::
+
+## Facetting
+
+`facet_wrap()` splits the plot into one panel per level of a variable. It is an alternative way to display the same three-variable relationship and is often easier to read than overlaid colours.
+
+```{r}
+#| label: fig-facet-wrap
+#| fig-cap: "Same data, faceted by port of origin."
+#| fig-alt: "Three scatterplots arranged vertically, one for each port of origin. Each shows arrival year against deaths per voyage with its own smoother."
+#| warning: false
+#| message: false
+ggplot(dat_filter, aes(arrival_year, died)) +
+  geom_point(aes(colour = start_port), show.legend = FALSE, alpha = 0.4) +
+  geom_smooth() +
+  scale_colour_viridis_d() +
+  facet_wrap(~ start_port, nrow = 3) +
+  labs(x = "Year of arrival",
+       y = "Number of deaths per voyage",
+       title = "Deaths during the Middle Passage, by port of origin") +
+  coord_cartesian(xlim = c(1641, 1815))
+```
+
+The base mapping for the smoother uses no `colour` mapping, so a single smoother is drawn per facet. Inside `geom_point()` we map `colour = start_port` so the points within each facet are coloured by port even though there is only one port per panel; this is purely decorative.
+
+* Try changing `nrow = 3` to `nrow = 1` and rendering. What happens?
+
+::: {.callout-tip}
+## Activity
+
+Replace `facet_wrap(~ start_port, nrow = 3)` with `facet_grid(start_port ~ .)`. Read the help with `?facet_grid` to see when one is preferred over the other.
+:::
+
+## Overplotting {#sec-overplotting}
+
+The earliest scatterplots in @sec-basic-plots had so many overlapping points that the density of the data was hidden. Two techniques help.
+
+`alpha` makes each point semi-transparent, so dense regions appear darker.
+
+`geom_jitter()` adds a small random offset, so points stacked on the same value are visible separately.
+
+```{r}
+#| label: fig-overplotting
+#| fig-cap: "Three approaches to overplotting."
+#| fig-alt: "Three scatterplots side by side. Left: opaque points overlapping heavily. Middle: transparent points revealing density. Right: jittered points spreading across the y-axis."
+#| warning: false
+opaque <- ggplot(dat_filter, aes(start_port, mortality)) +
+  geom_point() +
+  labs(title = "alpha = 1 (default)")
+
+transparent <- ggplot(dat_filter, aes(start_port, mortality)) +
+  geom_point(alpha = 0.1) +
+  labs(title = "alpha = 0.1")
+
+jittered <- ggplot(dat_filter, aes(start_port, mortality)) +
+  geom_jitter(alpha = 0.2, width = 0.3, height = 0) +
+  labs(title = "geom_jitter()")
+
+opaque + transparent + jittered
+```
+
+::: {.callout-warning}
+`geom_jitter()` moves points slightly. That is fine for showing density on a categorical axis, but if you jitter on a continuous axis you are misrepresenting the data. Set the `width` and `height` arguments deliberately. Here we use `height = 0` so vertical positions are unchanged.
+:::

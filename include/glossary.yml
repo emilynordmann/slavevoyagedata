@@ -1,0 +1,14 @@
+aesthetic: |
+  A visual property of a plot that is mapped to a variable in the data, such as the x-axis, y-axis, colour, fill, shape or size. Aesthetics are listed inside the aes() function.
+boxplot: |
+  A plot that summarises a continuous variable with five numbers: the median, the lower and upper quartiles (the box), and whiskers that extend to the most extreme non-outlying values. Outliers are drawn as individual points.
+factor: |
+  A data type in R that represents categorical data. A factor has a fixed set of values, called levels, and an order in which those levels are displayed.
+geom: |
+  A geometric object that represents data on a ggplot, such as a point, bar, line or boxplot. Geoms are added to a ggplot with functions that begin with geom_.
+histogram: |
+  A plot of the distribution of a single continuous variable. The x-axis is divided into bins and the y-axis shows how many observations fall in each bin.
+layer: |
+  A component of a ggplot that can be added with the + operator. Layers include geoms, scales, themes, facets and coordinate systems.
+smoother: |
+  A line added to a scatterplot to summarise the relationship between the x and y variables. Common smoothers are LOESS (locally weighted regression) and linear regression.

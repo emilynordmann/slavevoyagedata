@@ -1,0 +1,14 @@
+citHeader("To cite the slavevoyagedata tutorial in publications, please use:")
+
+bibentry(
+  bibtype  = "Manual",
+  title    = "Intro to Data Visualisation Using R and the Slave Voyages dataset",
+  author   = person("Emily", "Nordmann"),
+  year     = "2026",
+  url      = "https://github.com/emilynordmann/slavevoyagedata",
+  textVersion = paste0(
+    "Nordmann, E. (2026). ",
+    "Intro to Data Visualisation Using R and the Slave Voyages dataset. ",
+    "https://github.com/emilynordmann/slavevoyagedata"
+  )
+)

@@ -1,0 +1,208 @@
+# Reshaping data and combining plots {#sec-reshaping}
+
+```{r setup-reshaping, include=FALSE}
+source("R/booktem_setup.R")
+source("R/my_setup.R")
+library(tidyverse)
+library(patchwork)
+dat_final <- read_csv("data.csv", show_col_types = FALSE) |>
+  rename(id = `Voyage ID`,
+         vessel = `Vessel name`,
+         start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,
+         purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,
+         total_embarked = `Total embarked`,
+         total_disembarked = `Total disembarked`,
+         arrival_year = `Year of arrival at port of disembarkation`,
+         men = `Percent men`,
+         women = `Percent women`,
+         children = `Percent children`,
+         died = `Slaves died during middle passage`,
+         mortality = `Mortality rate`,
+         outcome = `Slaves outcome label`) |>
+  mutate(across(c(id, vessel, purchase_place, outcome), as.factor),
+         start_port = factor(start_port,
+                             levels = c("Liverpool", "London", "Bristol",
+                                        sort(setdiff(unique(start_port),
+                                                     c("Liverpool", "London", "Bristol"))))))
+
+dat_filter <- dat_final |>
+  filter(start_port %in% c("Liverpool", "London", "Bristol"))
+```
+
+## Intended learning outcomes
+
+By the end of this chapter you will be able to:
+
+* Reshape data from wide to long with `pivot_longer()`
+* Plot grouped distributions using one mapping per categorical column rather than one column per category
+* Order categorical axes deliberately with `factor()` or `fct_relevel()`
+* Combine multiple plots into a single figure with the `patchwork` package
+
+## Functions used
+
+* tidyr: `pivot_longer()`
+* forcats: `fct_relevel()`
+* ggplot2: `geom_boxplot()`, `geom_col()`
+* patchwork: `+`, `/`, `plot_layout()`, `plot_annotation()`
+
+## From wide to long
+
+The dataset has three columns recording the demographic make-up of each voyage. `men`, `women` and `children` are each a percentage. To plot all three on the same axes we need them in a single column.
+
+```{r}
+head(dat_filter[, c("start_port", "men", "women", "children")])
+```
+
+This is the *wide* form. Each demographic category has its own column. To plot them together we need the *long* form, where one column holds the category and another holds the value.
+
+`pivot_longer()` does the conversion. We tell it which columns to gather (`cols`), the name of the new column that will hold the original column names (`names_to`) and the name of the new column that will hold the values (`values_to`).
+
+```{r}
+dat_long <- dat_filter |>
+  pivot_longer(cols = c(men, women, children),
+               names_to = "demographic",
+               values_to = "percent")
+
+head(dat_long[, c("start_port", "demographic", "percent")])
+```
+
+Each voyage now appears three times, once per demographic category. The column is called `demographic` because it holds the categories *man*, *woman* and *child*. The values are percentages of the people embarked.
+
+::: {.callout-note}
+The original column names `men`, `women` and `children` are inherited from the source database, where they record the percentages reported for each voyage. In the reshaped data, the column `demographic` holds those labels as values.
+:::
+
+## Ordering categorical axes
+
+By default, ggplot will plot `demographic` in alphabetical order, which puts `children` first. We probably want `men`, `women`, `children` or the other way around. `fct_relevel()` from `forcats` is the easiest way.
+
+```{r}
+dat_long <- dat_long |>
+  mutate(demographic = fct_relevel(demographic, "men", "women", "children"))
+```
+
+## Grouped boxplots
+
+We can now show the distribution of the demographic percentages, broken down by port of origin, all on one plot.
+
+```{r}
+#| label: fig-grouped-box
+#| fig-cap: "Demographic composition of voyages from each port."
+#| fig-alt: "Grouped boxplots. The x-axis shows demographic category (men, women, children). For each category there are three boxes, one per port of origin (Liverpool, London, Bristol), distinguished by fill colour. Men make up roughly 55-65 percent on average, women 20-30 percent, children 10-20 percent."
+#| warning: false
+ggplot(dat_long, aes(x = demographic, y = percent, fill = start_port)) +
+  geom_boxplot(alpha = 0.6) +
+  scale_fill_viridis_d(option = "E") +
+  labs(x = "Demographic category",
+       y = "Percent of those embarked",
+       fill = "Port of origin")
+```
+
+Men make up the majority of those embarked on every type of voyage, but the percentage of women and children varies markedly by port.
+
+::: {.callout-tip}
+## Activity
+
+Change the value of `alpha` and observe what happens. Try `alpha = 0.2` and `alpha = 1`.
+:::
+
+## Piping straight into ggplot
+
+You can combine `filter()` and `ggplot()` in a single pipe rather than creating an intermediate object. The example below takes the long-format data, filters to voyages that disembarked in the Americas, and plots the result.
+
+```{r}
+#| label: fig-filtered-box
+#| fig-cap: "Demographic composition of voyages that disembarked in the Americas."
+#| fig-alt: "Boxplots of percent embarked by demographic category, restricted to voyages with outcome 'Slaves disembarked in Americas'. Men, women and children are on the x-axis; percentage on the y-axis."
+#| warning: false
+dat_long |>
+  filter(outcome == "Slaves disembarked in Americas") |>
+  ggplot(aes(x = demographic, y = percent, fill = demographic)) +
+  geom_boxplot(show.legend = FALSE) +
+  scale_fill_viridis_d(option = "E") +
+  labs(x = NULL,
+       y = "Percent of those embarked",
+       title = "Demographic composition of voyages disembarking in the Americas")
+```
+
+## Combining plots with patchwork {#sec-patchwork}
+
+`patchwork` lets you arrange `ggplot` objects into multi-panel figures. The syntax is intuitive: `+` puts plots side by side, `/` stacks them vertically, and `plot_layout()` controls the arrangement.
+
+First, save two plots as objects.
+
+```{r}
+#| warning: false
+men_plot <- dat_long |>
+  filter(demographic == "men") |>
+  ggplot(aes(start_port, percent, fill = start_port)) +
+  geom_boxplot(show.legend = FALSE, alpha = 0.6) +
+  scale_fill_viridis_d(option = "E") +
+  labs(x = NULL, y = "% men")
+
+children_plot <- dat_long |>
+  filter(demographic == "children") |>
+  ggplot(aes(start_port, percent, fill = start_port)) +
+  geom_boxplot(show.legend = FALSE, alpha = 0.6) +
+  scale_fill_viridis_d(option = "E") +
+  labs(x = NULL, y = "% children")
+```
+
+Then combine them.
+
+```{r}
+#| label: fig-patchwork-side
+#| fig-cap: "Two boxplots side by side with patchwork."
+#| fig-alt: "Two boxplots arranged horizontally. The left shows percentage of men by port; the right shows percentage of children by port."
+men_plot + children_plot
+```
+
+Stacked vertically.
+
+```{r}
+#| label: fig-patchwork-stack
+#| fig-cap: "The same two boxplots stacked vertically."
+#| fig-alt: "The same two boxplots arranged vertically rather than side by side."
+men_plot / children_plot
+```
+
+`plot_annotation()` adds a single overall title across multiple panels.
+
+```{r}
+#| label: fig-patchwork-annotated
+#| fig-cap: "Combined figure with a shared title."
+#| fig-alt: "Side-by-side boxplots with a shared title 'Demographic composition by port of origin'."
+(men_plot + children_plot) +
+  plot_annotation(title = "Demographic composition by port of origin")
+```
+
+See the [`patchwork` documentation](https://patchwork.data-imaginist.com/) for more elaborate layouts, shared legends and `tag_levels` for automatic panel labels (A, B, C).
+
+## Activities
+
+::: {.callout-tip}
+## Activity 1
+
+Build a third plot showing the percentage of women by port, and combine all three plots (`men_plot`, `women_plot`, `children_plot`) in a single row.
+:::
+
+::: {.callout-note collapse="true"}
+## Solution
+
+```{r eval = FALSE}
+women_plot <- dat_long |>
+  filter(demographic == "women") |>
+  ggplot(aes(start_port, percent, fill = start_port)) +
+  geom_boxplot(show.legend = FALSE, alpha = 0.6) +
+  scale_fill_viridis_d(option = "E") +
+  labs(x = NULL, y = "% women")
+
+men_plot + women_plot + children_plot
+```
+:::
+
+::: {.callout-tip}
+## Activity 2
+
+Reshape the data back into wide format using `pivot_wider()`. (Hint: it takes `names_from` and `values_from` arguments.)
+:::

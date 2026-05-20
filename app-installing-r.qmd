@@ -1,0 +1,20 @@
+# Installing R and RStudio {#sec-installing-r}
+
+This tutorial assumes you already have R, RStudio and the `tidyverse` installed. If you are starting from scratch, the most up-to-date instructions are in chapter 1 of *Applied Data Skills*:
+
+* [Installing R and RStudio](https://psyteachr.github.io/ads-v3/01-intro.html#sec-install-r)
+* [Installing packages](https://psyteachr.github.io/ads-v3/01-intro.html#sec-install-package)
+* [Setting up a project](https://psyteachr.github.io/ads-v3/01-intro.html#sec-rproj)
+
+In short:
+
+1. Install R from <https://cran.r-project.org/> (choose the version for your operating system).
+2. Install RStudio Desktop from <https://posit.co/download/rstudio-desktop/>. RStudio is a development environment for R; it is free for individual use.
+3. Install Quarto from <https://quarto.org/docs/get-started/>. Quarto is what renders this book and what you will use to produce reports of your own.
+4. In RStudio, run `install.packages(c("tidyverse", "patchwork"))` in the console. This installs the packages used throughout this tutorial.
+
+You only need to install each package once per machine. You then load it with `library()` at the top of each new session, as we do in @sec-getting-started.
+
+::: {.callout-tip}
+If you cannot install R locally, [Posit Cloud](https://posit.cloud/) gives you a free RStudio environment in the browser with no installation required. It is sufficient for working through this tutorial.
+:::

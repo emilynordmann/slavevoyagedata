@@ -1,0 +1,181 @@
+# Getting started {#sec-getting-started}
+
+```{r setup-getting-started, include=FALSE}
+source("R/booktem_setup.R")
+source("R/my_setup.R")
+```
+
+## Intended learning outcomes
+
+By the end of this chapter you will be able to:
+
+* Load the `tidyverse` and `patchwork` packages
+* Read a CSV file into R with `read_csv()` and verify the import worked
+* Rename variables with `rename()` to make them easier to work with
+* Convert columns to factors with `factor()`, controlling the display order
+* Use `mutate()` and `across()` to transform several columns at once
+
+## Functions used
+
+* tidyverse (load with `library(tidyverse)`)
+  + readr: `read_csv()`
+  + dplyr: `rename()`, `mutate()`, `across()`
+  + tibble: `glimpse()`
+* base R: `summary()`, `str()`, `factor()`, `c()`
+
+## Set-up
+
+For this tutorial you will find it helpful to write your code in a [Quarto](https://quarto.org/) document. Quarto lets you intersperse code, output and notes in a single file that is easy to share. If you have not used Quarto before, the [Quarto Reports](https://psyteachr.github.io/ads-v3/02-reports.html) chapter of `ads-v3` is a good starting point.
+
+1. Open RStudio.
+2. Create a new RStudio project in a fresh folder.
+3. Download <a href="data.csv" download>this data</a> into that folder.
+4. Create a new Quarto document.
+5. Replace the default setup chunk at the top of your `.qmd` file with the one below.
+
+````
+```{{r}}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(patchwork)
+```
+````
+
+## Loading packages
+
+The main package we will use is the `tidyverse` collection. This loads `readr` for importing data, `dplyr` for wrangling, `tidyr` for reshaping, and `ggplot2` for plotting, along with several others. We will also use `patchwork` later to combine multiple plots into a single figure.
+
+```{r message = FALSE}
+library(tidyverse)
+library(patchwork)
+```
+
+::: {.callout-tip}
+You only need to install a package once (`install.packages("tidyverse")`) but you need to load it with `library()` every time you start a new R session.
+:::
+
+## Loading the data
+
+The data are in a CSV file called `data.csv`. We read them in with `read_csv()` from `readr`. The result is stored in an object called `dat`.
+
+```{r message = FALSE, warning = FALSE}
+dat <- read_csv("data.csv")
+```
+
+When `read_csv()` runs successfully it prints a column specification telling you what type of data it found in each column. `chr` means character (text), `dbl` means double (decimal number). If you get the error message `…does not exist in current working directory` you have almost certainly mis-typed the file name, forgotten the `.csv` extension, or saved the data outside your project folder. If you get `could not find function "read_csv"` you have not loaded the `tidyverse`. See @sec-loading-data for more.
+
+After importing, always check that the resulting table looks like you expect. Click `dat` in the Environment pane, or run `glimpse(dat)` in the console.
+
+```{r}
+glimpse(dat)
+```
+
+* The dataset has `r fitb(10507)` rows of data and `r fitb(13)` columns.
+
+## House-keeping
+
+The column names are informative but long, which makes them awkward to type and read. As a rule, variable names should avoid spaces. Pick a naming convention (`my.var`, `myVar`, `my_var`) and stick with it. This tutorial uses underscores and no capitals.
+
+We use `rename()` to give the variables shorter names. The syntax is `new_name = old_name`. Because the original names contain spaces, we enclose them in back-ticks.
+
+```{r}
+dat_rename <- rename(dat,
+                     id = `Voyage ID`,
+                     vessel = `Vessel name`,
+                     start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,
+                     purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,
+                     total_embarked = `Total embarked`,
+                     total_disembarked = `Total disembarked`,
+                     arrival_year = `Year of arrival at port of disembarkation`,
+                     men = `Percent men`,
+                     women = `Percent women`,
+                     children = `Percent children`,
+                     died = `Slaves died during middle passage`,
+                     mortality = `Mortality rate`,
+                     outcome = `Slaves outcome label`)
+```
+
+::: {.callout-tip}
+When code starts to spread across many lines, pressing Enter after a comma to break the line makes it much easier to read.
+:::
+
+## Checking variable types
+
+After importing and renaming, check what R thinks each column is. Three useful options are:
+
+```{r eval = FALSE}
+str(dat_rename)
+summary(dat_rename)
+sapply(dat_rename, class)
+```
+
+* How many of the variables are character (text) variables? `r fitb(4)`
+* How many of the variables are numeric (double)? `r fitb(9)`
+
+Several are correct as-is, but two issues need attention. The `id` column contains numbers, but those numbers are identifiers, not quantities you would average. The character columns (`vessel`, `start_port`, `purchase_place`, `outcome`) hold a fixed set of categories rather than free text. Both kinds of column should be `r glossary("factor", "factors")`, which is how R represents categorical data.
+
+## Converting to factors
+
+We use `mutate()` to overwrite each column with a factor version of itself. `factor()` lets us set the display order with the `levels` argument, which matters because R will otherwise sort categories alphabetically in plots.
+
+```{r}
+dat_final <- mutate(dat_rename,
+                    id             = factor(id),
+                    vessel         = factor(vessel),
+                    purchase_place = factor(purchase_place),
+                    outcome        = factor(outcome),
+                    start_port     = factor(start_port,
+                                            levels = c("Liverpool",
+                                                       "London",
+                                                       "Bristol",
+                                                       sort(setdiff(unique(start_port),
+                                                                    c("Liverpool", "London", "Bristol"))))))
+```
+
+We have given `start_port` an explicit order. Liverpool, London and Bristol come first because we will focus on those three; the remaining ports follow in alphabetical order. This means later plots will show the three big British ports in a meaningful order, rather than the default alphabetical Bristol, Liverpool, London.
+
+::: {.callout-note collapse="true"}
+## A quicker way for batch conversions
+
+If you do not need to control the levels for each column individually, you can convert several columns at once with `across()`:
+
+```{r eval = FALSE}
+dat_final <- mutate(dat_rename,
+                    across(c(id, vessel, purchase_place, outcome, start_port),
+                           as.factor))
+```
+
+This is more compact but loses the explicit ordering of `start_port`. See the [`dplyr` documentation](https://dplyr.tidyverse.org/reference/across.html) for more.
+:::
+
+Run `summary()` again on `dat_final` and look at how the factor variables are now summarised by their counts per level.
+
+```{r eval = FALSE}
+summary(dat_final)
+```
+
+## Activities
+
+::: {.callout-tip}
+## Activity 1
+
+Run `glimpse(dat_final)` and identify which columns are now factors. How many factor columns are there? `r fitb(5)`
+:::
+
+::: {.callout-tip}
+## Activity 2
+
+The `mortality` column is a proportion. Use `summary(dat_final$mortality)` to find its mean. To two decimal places, what is it? `r fitb(c(".18", "0.18"))`
+:::
+
+::: {.callout-note collapse="true"}
+## Solution to Activity 2
+
+```{r eval = FALSE}
+summary(dat_final$mortality)
+```
+
+The mean mortality rate across the 10,507 voyages in this subset is about 0.18 (18%).
+:::

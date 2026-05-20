@@ -1,0 +1,152 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Intro to Data Visualisation Using R and the Slave Voyages dataset",
+    "section": "",
+    "text": "Overview\nThis is a beginner’s guide to ggplot2 and data visualisation. It will assume the following things:\n\nYou have installed R and RStudio\nYou know how to install and load packages in R\nYou know the absolute basics of R, e.g., what a function is, how to run a line of code. If you’d like to recap these basics, you may find the Programming Basics Chapter of my MSc book useful\nYou have a basic level of data visualisation comprehension, e.g., you can read various types of graphs\nYou haven’t got a clue how to make these graphs in R\n\nThis tutorial was the result of a request by David Tree for anti-racism curriculum materials. The data used is from the Slave Voyages project. The Trans-Atlantic Slave Trade Database comprises 36,000 individual slaving expeditions between 1514 and 1866. This dataset is horrifying and so is the history contained within the graphs you will produce.\nWhere additional instruction or detail about certain basic R functions might be helpful, I will point to relevant chapters of my MSc data skills book to avoid duplication.\nThe code for this tutorial is available on GitHub with a Creative Commons licence. You may use it and adapt with without any further permission.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html",
+    "href": "01-tutorial.html",
+    "title": "\n1  Data visualisation\n",
+    "section": "",
+    "text": "1.1 Set-up\nThe Slave Voyages website contains a huge amount of data. For this tutorial I will provide a specific subset but you can explore the dataset further and download your own version.\nFor the purpose of this tutorial, please download this data in order to replicate my analyses and output exactly. This data is a subset of all the available dataset, and focuses on slave ships that originated in Britain.\nFor this tutorial you will find it helpful to write your code in RMarkdown. Not only does Markdown make it easy to write additional notes alongside your code, but it’s easier to produce a document that looks good that you can share. If you need more information about Markdown and/or setting your working directory see Intro to R\nThe main package we’re going to use is the tidyverse collection. The tidyverse is a collection of packages that are frequently used for data wrangling and visualisation. The ones we will draw on most heavily in this tutorial are dplyr for wrangling and ggplot2 for plotting.\nlibrary(tidyverse)\nNext we need to load the data that is stored in data.csv. For more info, see Loading Data.\ndat &lt;- read_csv(\"data.csv\")",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#set-up",
+    "href": "01-tutorial.html#set-up",
+    "title": "\n1  Data visualisation\n",
+    "section": "",
+    "text": "Download the data, open RStudio and set your working directory to the folder the data is in, and open up a new Markdown document.\n\n\n\nLoad the tidyverse package\n\n\n\n\n\nThe dataset has  rows of data and  columns.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#house-keeping",
+    "href": "01-tutorial.html#house-keeping",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.2 House-keeping",
+    "text": "1.2 House-keeping\nLook at the data, either by clicking dat in the Environment pane or by running dat in the console, and familiarise yourself with what the data refer to - if you need additional explanation, consult the Slave Voyages website. As you can see, the labels of the columns are quite long, which means they’re informative, but they’re not going to be easy to work with in R.\nAs a rule, you should avoid variable names that have spaces and you should pick a naming convention and stick with it. Popular choices are to use periods (my.var), letter case (myVar) or underscores (my_var). I prefer using underscores and never using a capital letter anywhere so that’s what we’ll do in this tutorial.\nThe first thing we’re going to do is to use rename() to make the variables easier to work with. This might seem a bit clunky but it will save us a huge amount of time in the future.\nA few things to note:\n\nThe syntax of rename() is new_name = old_name.\nBecause the original names have spaces, you need to enclose the old variable names in back-ticks.\nPick short names that make sense to you. If my names don’t seem informative, choose your own but you’ll need to remember what your equivalents are throughout this tutorial.\nWhen writing code, if you press enter after a comma it should do a line break like the below code which can be easier to read.\nComments (with a #) are bits of text that R ignores when running the code, you can use them to leave notes to yourself\n\n\ndat_rename &lt;- rename(dat, # the name of the dataset you want to use\n              id = `Voyage ID`,\n              vessel = `Vessel name`,\n              start_port = `Voyage itinerary imputed port where began (ptdepimp) place`,\n              purchase_place = `Voyage itinerary imputed principal place of slave purchase (mjbyptimp)`,\n              total_embarked = `Total embarked`,\n              total_disembarked = `Total disembarked`,\n              arrival_year = `Year of arrival at port of disembarkation`,\n              men = `Percent men`,\n              women = `Percent women`,\n              children = `Percent children`,\n              died = `Slaves died during middle passage`,\n              mortality = `Mortality rate`,\n              outcome = `Slaves outcome label`\n              )\n\nThe final thing we need to do is check what type of data R thinks each column is. There’s a few ways you can do this, try each of the below options and view the output.\n\nstr(dat_rename)\nsummary(dat_rename)\nsapply(dat_rename, class)\n\n\nHow many of the variables are character (i.e., text) variables? \n\nHow many of the variables are numeric (otherwise known as double)? \n\n\nA lot of these are correct, but there’s a few that might cause us issues further down the line. Whilst id contains numbers, the information in it isn’t numeric, they’re just simply names that happen to be in numerical format. Additionally, character doesn’t quite do justice to the data that’s contained in those columns because it’s not just any old text, it’s a fixed set of categories, or factors.\nWe’re going to transform the data using the function mutate(). mutate() can be used to create new columns, but it can also be used to overwrite existing columns if you use the same variable name on the left-hand side and right-hand side of the equal sign.\n\nYou can read the below code as “overwrite the column id with id as a factor” and so on.\n\n\ndat_final &lt;- mutate(dat_rename,\n                      id = as.factor(id),\n                      vessel = as.factor(vessel),\n                      start_port = as.factor(start_port),\n                      purchase_place = as.factor(purchase_place),\n                      outcome = as.factor(outcome))\n\nThere is a quicker way to do this which you can read about here if you’re feeling confident.\n\nRun summary() again on this new dataset and look at how the summary of the new factor variables has changed.\n\n\nsummary(dat_final)",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#making-plots-with-ggplot2",
+    "href": "01-tutorial.html#making-plots-with-ggplot2",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.3 Making plots with ggplot2\n",
+    "text": "1.3 Making plots with ggplot2\n\nggplot is so powerful because it uses layers and each layer can be customised independently from the others. The first layer is always the base of the plot that specifies the axes and any other grouping variables.\n\nRun the below code and look at the output.\n\naes = aesthetics mappings\n\n\nggplot(data = dat_final, aes(x = arrival_year, y = total_embarked))\n\nGiven the type of variables, what type of plot is likely to be built on this base layer? \nBar chart\nScatterplot\nHistogram",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#additional-layers",
+    "href": "01-tutorial.html#additional-layers",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.4 Additional layers",
+    "text": "1.4 Additional layers\nOnce you have specified the base layer of the plot, you can then add additional elements. Geoms are geometric objects and are the most common type of layer you will add. Geoms can be representations of the data (data points, bar charts, boxplots, histograms) or representations of variability in the data (error bars).",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#scatterplots",
+    "href": "01-tutorial.html#scatterplots",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.5 Scatterplots",
+    "text": "1.5 Scatterplots\nLet’s complete the scatterplot above by plotting the raw data points using geom_point().\nThings to note:\n\nYou don’t need to write the argument names (data, x, y) as long as you use them in the default order. When you’re first learning R, it can help to write them out.\nR will give you the warning message Removed 422 rows containing missing values or values outside the scale range (geom_point()).. This means that there were 422 rows in the data where one or both of the variables you’re trying to plot are missing.\n\n\nggplot(dat_final, aes(arrival_year, total_embarked)) +\n  geom_point()\n\nWarning: Removed 422 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\n\nBasic scatterplot\n\n\n\nThere’s so many data points that it makes it difficult to get a real sense of the spread of the data. This isn’t a fault of the graph, it’s because of how many people were enslaved.\nTo help identify any trends, it can be useful to add a line of best fit with an additional layer and an additional geom. geom_smooth() uses the loess method by default but if you’re fitting a linear model it can be better to adjust the default to method = lm.\n\nTry both options and decide which one best represents the trend of the data.\n\n\nggplot(dat_final, aes(arrival_year, total_embarked)) +\n  geom_point() +\n  geom_smooth()\n\nggplot(dat_final, aes(arrival_year, total_embarked)) +\n  geom_point() +\n  geom_smooth(method = \"lm\")\n\nOne final note on layers before we move on, the order of the layers matters. If you specify geom_smooth() first, ggplot() will take your orders literally and draw the data points on top of it.\n\nggplot(dat_final, aes(arrival_year, total_embarked)) +\n  geom_smooth() +\n  geom_point()\n\n\n\nBadly ordered layers",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#boxplots",
+    "href": "01-tutorial.html#boxplots",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.6 Boxplots",
+    "text": "1.6 Boxplots\nBoxplots can be drawn using geom_boxplot() and require a categorical variable on the x-axis and a continuous variable on the y-axis.\n\nRun the below code. What’s the problem with this graph?\n\n\nggplot(dat_final, aes(x = start_port, y = total_embarked)) +\n  geom_boxplot()\n\nThere’s too many categories of the x-axis to sensibly display on a single graph. We already know this from the output of summary, but we can use group_by(), count(), and arrange() to give us a total of how many data points there are for each port.\n\n\ngroup_by() doesn’t make any surface changes to your data, instead, it groups the data so that whatever operation comes next is performed for each group in the specified variable.\nTry removing the group_by() line or changing start_port to another categorical variable to see how the output changes.\nThis code uses %&gt;% or pipes. Pipes send the output of a line of code to the first argument of the next line of code and are an extremely efficient way to write code. There is more information in the Data Wrangling chapter.\n\n\nport_counts &lt;- dat_final %&gt;% # take dat_final\n  group_by(start_port) %&gt;% # then group it by start_port\n  count() %&gt;% # then count how many observations in each group\n  arrange(desc(n)) # then arrange it in descending order\n\nLook at port_counts. As you can see, Liverpool, London, and Bristol have significantly more data points than any other location, so we will filter the dataset using filter() and just use these ports for the boxplot.\n\nThis code uses the %in% notation. You can read this as “retain any observation where start_port is equal to one of these values”.\n\n\ndat_filter &lt;- dat_final %&gt;%\n  filter(start_port %in% c(\"Liverpool\", \"London\", \"Bristol\"))\n\nNow we can run the boxplot again using the filtered dataset to give us a representation of how many slaves were embarked on ships that originated in these three cities.\n\nggplot(dat_filter, aes(x = start_port, y = total_embarked)) +\n  geom_boxplot()\n\n\n\nSimple boxplot",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#violin-boxplots",
+    "href": "01-tutorial.html#violin-boxplots",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.7 Violin-boxplots",
+    "text": "1.7 Violin-boxplots\nR gives you a much greater range of visualisation options than those presented by proprietary software like SPSS or Excel. Using layers, you can add a violin plot on to a boxplot to show the distribution of the data using geom_violin()\nThings to note:\n\nThe order of the layers is important, if you draw the boxplot then the violin on top of it, you won’t be able to see the boxplot.\nTrying changing trim = FALSE to TRUE.\nTry changing the value of width = .2\n\n\n\nggplot(dat_filter, aes(x = start_port, y = total_embarked)) +\n  geom_violin(trim = FALSE) +\n  geom_boxplot(width = .2)\n\n\n\nViolin-boxplot\n\n\n\nWe can see from these plots that the median number of slaves that embarked on each ship was just over 250 but that in many cases this number was much, much higher, particularly for ships that originated in Liverpool.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#bar-charts",
+    "href": "01-tutorial.html#bar-charts",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.8 Bar charts",
+    "text": "1.8 Bar charts\nBar charts should only ever be used to represent counts rather than measures of central tendency like the mean because they hide so much variability. Each geom has a default statistic associated with it (for example, the line in the boxplots above was the median) and in keeping with this ethos, the default statistic for geom_bar() is a simple count.\nThings to note:\n\nWith geom_bar() you don’t need to specify the y-axis, because the y-axis is always going to be a count.\nTry removing fill = start_port and see what happens.\nTry changing show.legend() to TRUE and see what happens. Why do we want to suppress the legend in this case?\n\n\nggplot(dat_filter, aes(x = start_port, fill = start_port)) +\n  geom_bar(show.legend = FALSE)\n\n\n\nBar chart of counts\n\n\n\nRemember, this graph does not show the total number of slaves on the ships from these ports, it merely shows the number of voyages that originated from these three ports.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#plotting-summary-statistics",
+    "href": "01-tutorial.html#plotting-summary-statistics",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.9 Plotting summary statistics",
+    "text": "1.9 Plotting summary statistics\nIn the above plots, we have plotted the raw data. For the boxplots, R has done some calculations in the background to determine the medians and the IQR and the bar charts have counted the number of observations but we didn’t need to do anything extra. Often we will want to produce plots of summary statistics or aggregates.\nTo do this it is best to use summarise() to produce a summary table and then plot that data. We will follow on from the above and calculate the number of slaves, not just the number of voyages, that embarked on ships originating from these three British ports.\nThings to note:\n\n\ngroup_by() does the same as it did above. Try removing the group_by() line and running the code, what does it show instead?\n\nna.rm = TRUE means remove any NA (missing) values when calculating the summary statistic. If you don’t specify this and there are missing values, R won’t calculate your statistic. Sometimes this is what you want, sometimes it isn’t.\n\n\nport_summary &lt;- dat_filter %&gt;%\n  group_by(start_port) %&gt;%\n  summarise(embarked = sum(total_embarked, na.rm = TRUE),\n            .groups = \"drop\")\n\nLook at port_summary. How many slaves embarked on slave ships that originated in Liverpool? \n~832 thousand\n~1.3 million\n56 thousand\nWe can then use this summarised data to create another bar chart, however, this time, because we don’t need R to count up the values (we’ve already done it), we’re going to use geom_col() rather than geom_bar(). The default stat for geom_col() is “identity”, i.e., it just uses the exact numbers you give it rather than calculating anything.\nThings to note:\n\nWe now have to specify the y-axis, to tell geom_col() which column of numbers we want to represent on our plot.\nWe’ve added an extra layer that makes our fill colours colour-blind friendly (the viridis palette). Because our fill variable is discrete (categorical), we’ve used the ...viridis_d option, if we had a continuous variable, there’s a ...viridis_c version.\nTry changing option = \"E\" to any letter from A - D and see which one you prefer.\n\n\nggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +\n  geom_col(show.legend = FALSE) +\n  scale_fill_viridis_d(option = \"E\") \n\n\n\nBar chart of summarised data with colour-blind palette\n\n\n\nThere were so many slaves embarked on ships originating from these three ports that R has decided that it is better to use scientific notation for the y-axis values. Try and think about the last time you had any data where the numbers involved were this large.\nTo override this behaviour and make the plot more readable we need to add an extra argument to adjust the y-axis labels.\n\nggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +\n  geom_col(show.legend = FALSE) +\n  scale_fill_viridis_d(option = \"E\") +\n  scale_y_continuous(labels = scales::comma)\n\n\n\nBar chart with adjusted y-axis labels\n\n\n\nLet’s make some further visual adjustments:\n\n\nlabs() controls the labels of the axes.\nYou can adjust the overall theme of the graph using the theme functions. Here I have used theme_minimal() but there are lots of others available. Try deleting the line of code and then type theme_ and see all of the options that come up on the auto-complete suggestions. Try them out to find one you like.\n\n\nggplot(port_summary, aes(x = start_port, y = embarked, fill = start_port)) +\n  geom_col(show.legend = FALSE) +\n  scale_fill_viridis_d(option = \"E\") +\n  scale_y_continuous(labels = scales::comma) +\n  labs(x = \"Port ship originated from\", \n       y = \"Number of slaves embarked\",\n       title = \"Slaves embarked on ships originating in British ports\") +\n  theme_minimal()\n\n\n\nBar chart with theme and title",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#saving-plots",
+    "href": "01-tutorial.html#saving-plots",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.10 Saving plots",
+    "text": "1.10 Saving plots\nThe ggsave() function makes it easy to save your plots. By default, R will save your plots to the main folder of your working directory unless you tell it otherwise.\nThe only argument you must provide to ggsave() is the name of the file you wish to create, with an image file extension. You can choose to save your image as “eps”, “ps”, “tex” (pictex), “pdf”, “jpeg”, “tiff”, “png”, “bmp”, “svg” or “wmf”.\nIf you only provide the file name, R will save the last plot you created.\n\nggsave(filename = \"last_plot.jpeg\")\n\nSaving 8 x 5 in image\n\n\nIf you want to make sure you save a specific plot, you can save your plot to an object and then give that argument to ggsave().\n\nmy_plot &lt;- ggplot(dat_filter, aes(x = start_port, fill = start_port)) +\n  geom_bar(show.legend = FALSE)\n\nggsave(filename = \"my_plot.jpeg\", plot = my_plot)\n\nSaving 8 x 5 in image",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#adding-more-variables",
+    "href": "01-tutorial.html#adding-more-variables",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.11 Adding more variables",
+    "text": "1.11 Adding more variables\nSo far all the plots we have made have represented a maximum of two variables, however, often you will want to represent three or more variables (be they continuous or discrete) and there are two main ways that you can do this. The first way is to display data from all variables on the same plot broken down by groups.\nFirst let’s make another standard scatterplot, this time looking at how many slaves died in each year.\n\nggplot(dat_filter, aes(arrival_year, died)) +\n  geom_point() +\n  geom_smooth()\n\n\n\nTwo-variable scatterplot\n\n\n\nWe can break this down by port of origin using colour.\n\nggplot(dat_filter, aes(arrival_year, died, colour = start_port)) +\n  geom_point() +\n  geom_smooth() +\n  scale_colour_viridis_d(alpha = .8)\n\n\n\nScatterplot grouped by colour\n\n\n\nThis graph now shows the data points and line of best fit in a different colour for each port of origin. We can make this easier to read by adding a theme, editing the axis labels, and also adjusting the limits of the x-axis so that there is no wasted space.\n\nggplot(dat_filter, aes(arrival_year, died, colour = start_port)) +\n  geom_point() +\n  geom_smooth() +\n  scale_colour_viridis_d(alpha = .8) +\n  theme_minimal() +\n  labs(x = \"Year of arrival\",\n       y = \"Number of slaves who died\",\n       colour = \"Port of origin\") +\n  scale_x_continuous(limits = c(1641, 1815))\n\n\n\nGrouped scatterplot with adjusted axes\n\n\n\nAlternatively, we can create three separate plots for each port using facet_wrap().\nThe base code for this plot is similar to the above with the following changes:\n\n\nstart_port is removed from the first line of code specifying the aesthetic and instead is added just to geom_point() so that only the data points have different colours, not the line of best fit, to make it easier to read (try adding it back in to the first line and see what happens).\nAn extra layer of facet_wrap() is added that tells R to split the graphs for each level of start_port.\n\nnrow specifies the number of rows the plots should be split across. Try changing this number to 1.\n\n\nggplot(dat_filter, aes(arrival_year, died)) +\n  geom_point(aes(colour = start_port), show.legend = FALSE) +\n  geom_smooth() +\n  scale_colour_viridis_d(alpha = .8) +\n  facet_wrap(~ start_port, nrow = 3) +\n  theme_minimal() +\n  labs(x = \"Year of arrival\",\n       y = \"Number of slaves embarked\",\n       title = \"Slave deaths for ships with British ports of origin\") +\n  scale_x_continuous(limits = c(1641, 1815))\n\n\n\nFacetted scatterplot",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#reshaping-data",
+    "href": "01-tutorial.html#reshaping-data",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.12 Reshaping data",
+    "text": "1.12 Reshaping data\nFor our final plots, we need to reshape the data before we can use it. We want a plot that shows the proportion of men, women, and children on ships originating from the three British ports.\nThe function pivot_longer() is used to transform data from wide-form into long-form. If you’d like more detail on this, see Data Wrangling 3.\nWhen it comes to reshaping data it is easier to show than tell - run the below code then look at dat_long and see how the columns that used to contain the information about the proportion of women, men, and children on each ship have changed.\n\ndat_long &lt;- dat_filter %&gt;%\n  pivot_longer(cols = c(\"women\", \"men\", \"children\"), \n               names_to = \"slave\", \n               values_to = \"prop\")\n\nWe can now use the variable slave (woman, man, child) as a categorical variable and plot the average proportion of slaves who were men, women, and children combined with other variables.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  },
+  {
+    "objectID": "01-tutorial.html#grouping-data-with-fill",
+    "href": "01-tutorial.html#grouping-data-with-fill",
+    "title": "\n1  Data visualisation\n",
+    "section": "\n1.13 Grouping data with fill\n",
+    "text": "1.13 Grouping data with fill\n\nAbove we displayed different colours of a scatterplot by specifying a continious variable to colour. We can do the same for categorical variables using fill. In the below plot we can represent the proportion of women, men, and children on ships originating from the three British ports, that is, we are representing one continuous variable (prop), and two categorical variables (port and type).\n\nAdd the code that edits the axis labels. You should change the labels for x, y and fill, and also add a title.\nChange the value of alpha and see what happens.\n\n\nggplot(dat_long, aes(x = slave, y = prop, fill = start_port)) +\n  geom_boxplot(alpha = .5) +\n  scale_fill_viridis_d(option = \"E\") +\n  theme_minimal()\n\n\n\nGrouped boxplot\n\n\n\nFinally, we can combine ggplot() with filter() using a pipe to narrow down our dataset without creating a separate object.\n\nUse fill to give each boxplot a different colour.\nSuppress the legend for geom_boxplot() because it’s not informative\nUse the viridis palette\n\n\ndat_long %&gt;%\n  filter(outcome == \"Slaves disembarked in Americas\") %&gt;%\n  ggplot(aes(x = slave, y = prop)) +\n  geom_boxplot() +\n  scale_fill_viridis_d(option = \"E\") +\n  theme_minimal() +\n  labs(title = \"Proportion of women, men, and child slaves \\n on ships disembarking in the Americas\")\n\n\n\nBoxplot using filtered dataset",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data visualisation</span>"
+    ]
+  }
+]
